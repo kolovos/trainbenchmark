@@ -13,9 +13,6 @@
 package hu.bme.mit.trainbenchmark.benchmark.dgraph.test;
 
 import hu.bme.mit.trainbenchmark.benchmark.config.BenchmarkConfigBase;
-import hu.bme.mit.trainbenchmark.benchmark.dgraph.DgraphBenchmarkScenario;
-import hu.bme.mit.trainbenchmark.benchmark.dgraph.config.DgraphBenchmarkConfig;
-import hu.bme.mit.trainbenchmark.benchmark.dgraph.config.DgraphBenchmarkConfigBuilder;
 import hu.bme.mit.trainbenchmark.benchmark.runcomponents.BenchmarkResult;
 import hu.bme.mit.trainbenchmark.benchmark.test.TrainBenchmarkTest;
 
@@ -23,11 +20,12 @@ public class DgraphTest extends TrainBenchmarkTest {
 
 	@Override
 	protected BenchmarkResult runTest(final BenchmarkConfigBase bcb) throws Exception {
-		final DgraphBenchmarkConfig bc = new DgraphBenchmarkConfigBuilder().setConfigBase(bcb)
-				.createConfig();
-		final DgraphBenchmarkScenario scenario = new DgraphBenchmarkScenario(bc);
-		final BenchmarkResult result = scenario.performBenchmark();
-		return result;
+//		final DgraphBenchmarkConfig bc = new DgraphBenchmarkConfigBuilder().setConfigBase(bcb)
+//				.createConfig();
+//		final DgraphBenchmarkScenario scenario = new DgraphBenchmarkScenario(bc);
+//		final BenchmarkResult result = scenario.performBenchmark();
+//		return result;
+		throw new UnsupportedOperationException();
 	}
 
 }
