@@ -1,0 +1,18 @@
+plugins { id "com.github.johnrengelman.shadow" version "1.2.3" }
+
+repositories {
+	flatDir {
+		dirs 'lib'
+	}
+ }
+
+shadowJar {
+	classifier = 'fat'
+	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.benchmark.dgraph.DGraphBenchmarkMain' }
+}
+
+dependencies {
+	compile name: 'dgraph4j-all-0.0.1'
+	compile project(':trainbenchmark-tool')
+	
+}
