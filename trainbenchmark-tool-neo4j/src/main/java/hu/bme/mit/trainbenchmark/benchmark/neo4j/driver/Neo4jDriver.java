@@ -132,33 +132,33 @@ public class Neo4jDriver extends Driver {
 		final File databaseDirectory = new File(dbPath);
 
 		if (databaseDirectory.exists()) {
-		  FileUtils.deleteDirectory(databaseDirectory);
+			FileUtils.deleteDirectory(databaseDirectory);
 		}
 
 		final String rawImportCommand = "%NEO4J_HOME%/bin/neo4j-import --into %DB_PATH% " //
-		    + "--nodes:Region %MODEL_PREFIX%-Region.csv " //
-		    + "--nodes:Route %MODEL_PREFIX%-Route.csv " //
-		    + "--nodes:Segment:TrackElement %MODEL_PREFIX%-Segment.csv " //
-		    + "--nodes:Semaphore %MODEL_PREFIX%-Semaphore.csv " //
-		    + "--nodes:Sensor %MODEL_PREFIX%-Sensor.csv " //
-		    + "--nodes:Switch:TrackElement %MODEL_PREFIX%-Switch.csv " //
-		    + "--nodes:SwitchPosition %MODEL_PREFIX%-SwitchPosition.csv " //
-		    + "--relationships:connectsTo %MODEL_PREFIX%-connectsTo.csv " //
-		    + "--relationships:entry %MODEL_PREFIX%-entry.csv " //
-		    + "--relationships:exit %MODEL_PREFIX%-exit.csv "//
-		    + "--relationships:follows %MODEL_PREFIX%-follows.csv "//
-		    + "--relationships:monitoredBy %MODEL_PREFIX%-monitoredBy.csv "//
-		    + "--relationships:requires %MODEL_PREFIX%-requires.csv "//
-		    + "--relationships:target %MODEL_PREFIX%-target.csv";
+			+ "--nodes:Region %MODEL_PREFIX%-Region.csv " //
+			+ "--nodes:Route %MODEL_PREFIX%-Route.csv " //
+			+ "--nodes:Segment:TrackElement %MODEL_PREFIX%-Segment.csv " //
+			+ "--nodes:Semaphore %MODEL_PREFIX%-Semaphore.csv " //
+			+ "--nodes:Sensor %MODEL_PREFIX%-Sensor.csv " //
+			+ "--nodes:Switch:TrackElement %MODEL_PREFIX%-Switch.csv " //
+			+ "--nodes:SwitchPosition %MODEL_PREFIX%-SwitchPosition.csv " //
+			+ "--relationships:connectsTo %MODEL_PREFIX%-connectsTo.csv " //
+			+ "--relationships:entry %MODEL_PREFIX%-entry.csv " //
+			+ "--relationships:exit %MODEL_PREFIX%-exit.csv "//
+			+ "--relationships:follows %MODEL_PREFIX%-follows.csv "//
+			+ "--relationships:monitoredBy %MODEL_PREFIX%-monitoredBy.csv "//
+			+ "--relationships:requires %MODEL_PREFIX%-requires.csv "//
+			+ "--relationships:target %MODEL_PREFIX%-target.csv";
 		final String importCommand = rawImportCommand //
-		    .replaceAll("%NEO4J_HOME%", neo4jHome) //
-		    .replaceAll("%DB_PATH%", dbPath) //
-		    .replaceAll("%MODEL_PREFIX%", modelPath);
+			.replaceAll("%NEO4J_HOME%", neo4jHome) //
+			.replaceAll("%DB_PATH%", dbPath) //
+			.replaceAll("%MODEL_PREFIX%", modelPath);
 		final CommandLine cmdLine = CommandLine.parse(importCommand);
 		final DefaultExecutor executor = new DefaultExecutor();
 		final int exitValue = executor.execute(cmdLine);
 		if (exitValue != 0) {
-		  throw new IOException("Neo4j import failed");
+			throw new IOException("Neo4j import failed");
 		}
 		startDb();
 	}

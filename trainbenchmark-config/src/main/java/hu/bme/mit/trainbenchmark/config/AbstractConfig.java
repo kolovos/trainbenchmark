@@ -14,7 +14,7 @@ import com.esotericsoftware.kryo.io.Output;
 public class AbstractConfig<TConfigBase extends AbstractConfigBase> {
 
 	protected final TConfigBase configBase;
-	
+
 	public AbstractConfig(final TConfigBase configBase) {
 		this.configBase = configBase;
 	}
@@ -27,7 +27,7 @@ public class AbstractConfig<TConfigBase extends AbstractConfigBase> {
 	 * Serialize the configuration to a file. This does not need to be redefined
 	 * in subclasses (e.g. {EmfGeneratorConfig}), hence the method is declared
 	 * as final.
-	 * 
+	 *
 	 * @param path
 	 * @throws FileNotFoundException
 	 */
@@ -37,11 +37,11 @@ public class AbstractConfig<TConfigBase extends AbstractConfigBase> {
 			kryo.writeObject(output, this);
 		}
 	}
-	
+
 	public static <T extends AbstractConfig<?>> T fromFile(final String path, final Class<T> clazz) throws FileNotFoundException {
 		final Kryo kryo = new Kryo();
 		kryo.setInstantiatorStrategy(new DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
-	    try (final Input input = new Input(new FileInputStream(path))) {
+		try (final Input input = new Input(new FileInputStream(path))) {
 			final T bc = kryo.readObject(input, clazz);
 			return bc;
 		}
