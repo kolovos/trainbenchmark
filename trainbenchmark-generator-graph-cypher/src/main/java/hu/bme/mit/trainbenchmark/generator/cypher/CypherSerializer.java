@@ -19,9 +19,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import static hu.bme.mit.trainbenchmark.constants.ModelConstants.SUPERTYPES;
 
@@ -46,13 +46,11 @@ public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 	public void initModel() throws IOException {
 		final String cypherPath = gc.getConfigBase().getModelPathWithoutExtension() + ".cypher";
 		final File cypherFile = new File(cypherPath);
-
 		writer = new BufferedWriter(new FileWriter(cypherFile));
 	}
 
 	@Override
 	public void persistModel() throws IOException, InterruptedException {
-
 		writer.close();
 	}
 
@@ -65,47 +63,33 @@ public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 		//If we have supertypes, we add them first
 		if (SUPERTYPES.containsKey(type)){
 			final String ancestorType = SUPERTYPES.get(type);
-			query .append(":" + ancestorType);
+			query.append(":" + ancestorType);
 		}
 
 		//Then we add the type
 		query.append(":" + type);
 
 		//Setting the attributes
-		query.append("{id:" + id);
+		query.append(" {id: " + id);
 		if (!attributes.isEmpty()){
-			query.append(",");
-
-			//Using an iterator in a while loop because hasNext method is needed
-			Iterator<? extends Entry<String, ?>> iterator = attributes.entrySet().iterator();
-			while (iterator.hasNext()){
-				final Entry<String, ? extends Object> entry = iterator.next();
-
-				final String key = entry.getKey();
-				final Object value = entry.getValue();
-
-
-				query.append(key + ":" + valueToString(value));
-
-				if (iterator.hasNext()){
-					query.append(",");
-				}
-			}
-
-			query.append("});");
-		} else {
-			query.append("});");
+			query.append(", ");
+			query.append(
+				attributes.entrySet().stream().map(
+					e -> (e.getKey() + ": " + valueToString(e.getValue()))
+				).collect(Collectors.joining(", "))
+			);
 		}
+		query.append("});");
 
 		write(query.toString());
 
-		//Addig relationships
-		for(Entry<String, Object> entry : outgoingEdges.entrySet()){
-			write("MATCH (from{id:" + id + "}), (to{id:" + entry.getValue() + "}) CREATE (from)-[:" + entry.getKey() + "]->(to);");
+		//Adding relationships
+		for(Entry<String, Object> entry : outgoingEdges.entrySet()) {
+			write("MATCH (from {id: " + id + "}), (to {id: " + entry.getValue() + "}) CREATE (from)-[:" + entry.getKey() + "]->(to);");
 		}
 
-		for (Entry<String, Object> entry : incomingEdges.entrySet()){
-			write("MATCH (from{id:" + entry.getValue() + "}), (to{id:" + id + "}) CREATE (from)-[:" + entry.getKey() + "]->(to);");
+		for (Entry<String, Object> entry : incomingEdges.entrySet()) {
+			write("MATCH (from {id: " + entry.getValue() + "}), (to {id: " + id + "}) CREATE (from)-[:" + entry.getKey() + "]->(to);");
 		}
 
 		return id;
@@ -117,23 +101,23 @@ public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 			return;
 		}
 
-		write("MATCH (from { id: " + from + " }), (to { id: " + to + "} ) CREATE (from)-[:" + label + "]->(to);");
+		write("MATCH (from {id: " + from + "}), (to {id: " + to + "}) CREATE (from)-[:" + label + "]->(to);");
 	}
 
 	@Override
 	public void setAttribute(final String type, final Object node, final String key, final Object value) throws IOException {
 		final String stringValue = valueToString(value);
 
-		write("MATCH ( node:" + type +" {id: " + node + "} ) SET node." + key + "=" + stringValue + ";");
+		write("MATCH (node:" + type + " {id: " + node + "}) SET node." + key + "=" + stringValue + ";");
 	}
 
 	private String valueToString(final Object value) {
+		if (value.toString().equals("true") || value.toString().equals("false")) return value.toString();
 		try {
 			Integer.parseInt(value.toString());
 			return value.toString();
 		} catch (NumberFormatException e){
-			if (value.toString().equals("true") || value.toString().equals("false")) return value.toString();
-			else return "\"" + value +"\"";
+			return "'" + value + "'";
 		}
 	}
 
