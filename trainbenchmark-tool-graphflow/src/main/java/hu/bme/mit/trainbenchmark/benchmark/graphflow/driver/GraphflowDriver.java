@@ -28,10 +28,12 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 
+import ca.waterloo.dsg.graphflow.server.GraphflowServer;
+
 public class GraphflowDriver extends Driver {
 
 	protected Transaction tx;
-	protected GraphDatabaseService graphDb;
+	protected GraphflowServer graphDb;
 	protected final Comparator<Node> nodeComparator = new NodeComparator();
 	protected final File databaseDirectory;
 
@@ -53,14 +55,14 @@ public class GraphflowDriver extends Driver {
 	@Override
 	public void destroy() {
 		if (graphDb != null) {
-			graphDb.shutdown();
+			//graphDb.stop();
 		}
 	}
 
-	@Override
-	public void beginTransaction() {
-		tx = graphDb.beginTx();
-	}
+//	@Override
+//	public void beginTransaction() {
+//		tx = graphDb.beginTx();
+//	}
 
 	@Override
 	public void finishTransaction() {

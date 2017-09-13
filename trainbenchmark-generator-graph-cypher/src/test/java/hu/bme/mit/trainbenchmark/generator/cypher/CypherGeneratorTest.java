@@ -14,7 +14,7 @@ import java.util.List;
 public class CypherGeneratorTest extends GeneratorTest {
 
 	protected final List<CypherFormat> formats = ImmutableList.of(
-		CypherFormat.BASIC, //
+//		CypherFormat.BASIC //
 		CypherFormat.GRAPHFLOW //
 	);
 
