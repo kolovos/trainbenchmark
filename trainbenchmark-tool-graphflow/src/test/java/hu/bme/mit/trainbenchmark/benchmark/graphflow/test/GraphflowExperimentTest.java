@@ -35,7 +35,7 @@ import java.util.StringJoiner;
  * <li>4 -> 1, 1 -> 5, 5 -> 4</li>
  * </ul>
  */
-public class GraphflowExpoerimentTest {
+public class GraphflowExperimentTest {
 
 	@Before
 	public void setUp() {
@@ -92,7 +92,7 @@ public class GraphflowExpoerimentTest {
 	@Test
 	public void testSemaphoreNeighborInject(){
 
-		System.out.println("\n==========SWITCH_INJECT==========");
+		System.out.println("\n==========SEMAPHORENEIGHBOR_INJECT==========");
 
 		String matchQuery = "MATCH (route:Route)-[:entry]->(semaphore:Semaphore) RETURN route, semaphore";
 
@@ -120,7 +120,7 @@ public class GraphflowExpoerimentTest {
 			"(route2:Route)-[:requires]->(sensor2) " +
 			"WHERE NOT " +
 			"(route2)-[:entry]->(semaphore) " +
-			"AND route1 <> route2 " +
+			"AND route1.id <> route2.id " +
 			"RETURN semaphore, route1, route2, sensor1, sensor2, te1, te2;";
 
 		System.out.println(matchQuery);
@@ -173,7 +173,7 @@ public class GraphflowExpoerimentTest {
 	}
 
 	private void constructGraph() {
-		final File cypherFile = new File("../models/railway-batch-1.graphflow");
+		final File cypherFile = new File("../models/railway-repair-1.graphflow");
 
 		try {
 			BufferedReader bufferedReader = new BufferedReader(new FileReader(cypherFile));
