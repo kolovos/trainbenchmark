@@ -21,27 +21,29 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static hu.bme.mit.trainbenchmark.constants.ModelConstants.SUPERTYPES;
 
 public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 
-	protected BufferedWriter writer;
+	private BufferedWriter writer;
+	private List<String> queries = new ArrayList<>();
 
-	public CypherSerializer(final CypherGeneratorConfig gc) {
+
+	CypherSerializer(final CypherGeneratorConfig gc) {
 		super(gc);
 	}
 
 	@Override
 	public String syntax() {
 		return "Cypher";
-	}
-
-	public void write(final String s) throws IOException {
-		writer.write(s + "\n");
 	}
 
 	@Override
@@ -54,12 +56,16 @@ public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 
 	@Override
 	public void persistModel() throws IOException, InterruptedException {
+
+		for(String query : queries){
+			writer.write(query + "\n");
+		}
 		writer.close();
 	}
 
 	class Node {
-		public final int id;
-		public final String type;
+		final int id;
+		final String type;
 
 		Node(int id, String type) {
 			this.id = id;
@@ -123,17 +129,19 @@ public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 		}
 		query.append("});");
 
-		write(query.toString());
+		queries.add(query.toString());
 	}
 
 	private void createGraphflowFormatVertex(final int id, final String type, final Map<String, ? extends Object> attributes) throws IOException {
 
 		StringBuilder query = new StringBuilder("CREATE (" + id);
 
-		if (SUPERTYPES.containsKey(type)) {
-			final String ancestorType = SUPERTYPES.get(type);
-			query.append(":" + ancestorType);
-		}
+
+		// REMOVED - GRAPHFLOW SUPPORTS ONLY ONE TYPE
+//		if (SUPERTYPES.containsKey(type)) {
+//			final String ancestorType = SUPERTYPES.get(type);
+//			query.append(":" + ancestorType);
+//		}
 
 		query.append(":" + type);
 
@@ -151,7 +159,7 @@ public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 		}
 
 
-		write(query.toString());
+		queries.add(query.toString());
 	}
 
 	private void addOutgoingEdges(final int id, final String type, final Map<String, Object> outgoingEdges) throws IOException {
@@ -162,7 +170,7 @@ public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 					if (entry.getValue()==null){
 						continue;
 					}
-					write("MATCH (from {id: " + id + "}), (to {id: " + entry.getValue() + "}) CREATE (from)-[:" + entry.getKey() + "]->(to);");
+					queries.add("MATCH (from {id: " + id + "}), (to {id: " + entry.getValue() + "}) CREATE (from)-[:" + entry.getKey() + "]->(to);");
 				}
 				break;
 
@@ -173,7 +181,7 @@ public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 						continue;
 					}
 					node = (Node) entry.getValue();
-					write("CREATE (" + id + ":" + type + ")-[:" + entry.getKey() + "]->(" + node.id +":"+ node.type + ");");
+					queries.add("CREATE (" + id + ":" + type + ")-[:" + entry.getKey() + "]->(" + node.id +":"+ node.type + ");");
 				}
 				break;
 		}
@@ -184,7 +192,7 @@ public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 
 			case BASIC:
 				for (Entry<String, Object> entry : incomingEdges.entrySet()) {
-					write("MATCH (from {id: " + entry.getValue() + "}), (to {id: " + id + "}) CREATE (from)-[:" + entry.getKey() + "]->(to);");
+					queries.add("MATCH (from {id: " + entry.getValue() + "}), (to {id: " + id + "}) CREATE (from)-[:" + entry.getKey() + "]->(to);");
 				}
 				break;
 
@@ -192,7 +200,7 @@ public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 				Node node;
 				for (Entry<String, Object> entry : incomingEdges.entrySet()) {
 					node = (Node) entry.getValue();
-					write("CREATE (" + node.id + ":" + node.type + ")-[:" + entry.getKey() + "]->(" + id +":"+ type +");");
+					queries.add("CREATE (" + node.id + ":" + node.type + ")-[:" + entry.getKey() + "]->(" + id +":"+ type +");");
 				}
 				break;
 		}
@@ -207,14 +215,14 @@ public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 		switch (gc.getCypherFormat()){
 
 			case BASIC:
-				write("MATCH (from {id: " + from + "}), (to {id: " + to + "}) CREATE (from)-[:" + label + "]->(to);");
+				queries.add("MATCH (from {id: " + from + "}), (to {id: " + to + "}) CREATE (from)-[:" + label + "]->(to);");
 				break;
 
 			case GRAPHFLOW:
 				Node from_node = (Node) from;
 				Node to_node = (Node) to;
 
-				write("CREATE (" + from_node.id + ":" + from_node.type +")-[:" + label + "]->(" + to_node.id + ":" + to_node.type + ");");
+				queries.add("CREATE (" + from_node.id + ":" + from_node.type +")-[:" + label + "]->(" + to_node.id + ":" + to_node.type + ");");
 				break;
 		}
 	}
@@ -225,12 +233,29 @@ public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 		switch (gc.getCypherFormat()){
 
 			case BASIC:
-				write("MATCH (node:" + type + " {id: " + node + "}) SET node." + key + "=" + stringValue + ";");
+				queries.add("MATCH (node:" + type + " {id: " + node + "}) SET node." + key + "=" + stringValue + ";");
 				break;
 
 			case GRAPHFLOW:
-				//TODO
-				//write("");
+				Node the_node = (Node) node;
+
+				String regexPattern = "\\(" + the_node.id + ":" + type + " \\{(.*)\\}\\)";
+				Pattern pattern = Pattern.compile(regexPattern);
+				Matcher matcher;
+				Boolean found = false;
+				for (int i = queries.size()-1; i>=0; i--){
+					matcher = pattern.matcher(queries.get(i));
+					if (matcher.find()){
+						found = true;
+						//TODO CREATE NODE WITH THE SAME ID + OLD ATTRIBUTES AND THE NEW ONE
+						break;
+					}
+				}
+				if (!found){
+					queries.add("CREATE (" + the_node.id + ":" + type + " {" + key + ":" + stringValue + "});");
+				}
+
+				break;
 		}
 	}
 

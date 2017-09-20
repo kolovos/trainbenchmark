@@ -13,7 +13,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.Arrays;
+import java.util.List;
 import java.util.StringJoiner;
 
 /**
@@ -40,52 +44,97 @@ public class GraphflowExpoerimentTest {
 	}
 
 	@Test
-	public void testTwoVertexFilterQuery() {
-		String matchQuery = "MATCH (v1)-[e1:FOLLOWS]->(v2),(v2)-[e2:FOLLOWS]->(v3),(v3)" +
-			"-[:FOLLOWS]->(v1) WHERE v1.views > v2.views RETURN v1, v2, v3;";
-		Object[][] expectedResults = {{0, 1, 3}, {3, 0, 1}, {3, 4, 1}, {5, 4, 1}};
-		runTest(matchQuery, expectedResults);
+	public void testSwitchSet(){
+
+		System.out.println("\n==========SWITCH_SET==========");
+
+		String matchQuery = "MATCH (route:Route)-[:entry]->(semaphore:Semaphore), " +
+			"(route)-[:follows]->(swP:SwitchPosition), " +
+			"(swP:SwitchPosition)-[:target]->(sw:Switch) " +
+			"WHERE semaphore.signal = \"GO\" " +
+			"AND route.active = true " +
+			"AND sw.currentPosition <> swP.position " +
+			"RETURN semaphore, route, swP, sw, sw.currentPosition, swP.position";
+
+		run(matchQuery);
 	}
 
 	@Test
-	public void testTwoEdgeFilterQuery() {
-		String matchQuery = "MATCH (v1)-[e1:FOLLOWS]->(v2),(v2)-[e2:FOLLOWS]->(v3),(v3)" +
-			"-[:FOLLOWS]->(v1) WHERE e1.views > e2.views RETURN v1, v2, v3;";
-		Object[][] expectedResults = {{0, 1, 3}, {1, 5, 4}, {3, 4, 1}, {4, 1, 3}};
-		runTest(matchQuery, expectedResults);
+	public void testSwitchSetInject(){
+
+		System.out.println("\n==========SWITCH_INJECT==========");
+
+		String matchQuery = "MATCH (sw:Switch)->(ignoreme) RETURN sw";
+
+		run(matchQuery);
 	}
 
 	@Test
-	public void testVertexAndEdgeFilterQuery() {
-		String matchQuery = "MATCH (v1)-[e1:FOLLOWS]->(v2),(v2)-[e2:FOLLOWS]->(v3),(v3)" +
-			"-[:FOLLOWS]->(v1) WHERE v1.views > e1.views RETURN v1, v2, v3;";
-		Object[][] expectedResults = {{1, 3, 0}, {1, 3, 4}, {3, 0, 1}, {3, 4, 1}, {5, 4, 1}};
-		runTest(matchQuery, expectedResults);
+	public void testSwitchMonitoredInject(){
+
+		System.out.println("\n==========SWITCH_MONITORED_INJECT==========");
+
+		String matchQuery = "MATCH (sw:Switch)->(ignoreme) RETURN sw";
+
+		run(matchQuery);
 	}
 
 	@Test
-	public void testEdgeAndLiteralFilterQuery() {
-		String matchQuery = "MATCH (v1)-[e1:FOLLOWS]->(v2),(v2)-[e2:FOLLOWS]->(v3),(v3)" +
-			"-[:FOLLOWS]->(v1) WHERE e1.views > 50 RETURN v1, v2, v3;";
-		Object[][] expectedResults = {{0, 1, 3}, {1, 5, 4}, {3, 0, 1}};
-		runTest(matchQuery, expectedResults);
+	public void testSwitchMonitored(){
+
+		System.out.println("\n==========SWITCH_MONITORED==========");
+
+		String matchQuery = "MATCH (sw:Switch)-[:monitoredBy]->(ignoreme) RETURN sw";
+
+		run(matchQuery);
 	}
 
 	@Test
-	public void testVertexAndLiteralFilterQuery() {
-		String matchQuery = "MATCH (v1)-[e1:FOLLOWS]->(v2),(v2)-[e2:FOLLOWS]->(v3),(v3)" +
-			"-[:FOLLOWS]->(v1) WHERE v1.views > 100 RETURN v1, v2, v3;";
-		Object[][] expectedResults = {{0, 1, 3}, {3, 0, 1}, {3, 4, 1}, {5, 4, 1}};
-		runTest(matchQuery, expectedResults);
+	public void testSemaphoreNeighborInject(){
+
+		System.out.println("\n==========SWITCH_INJECT==========");
+
+		String matchQuery = "MATCH (route:Route)-[:entry]->(semaphore:Semaphore) RETURN route, semaphore";
+
+		run(matchQuery);
 	}
 
+
+//	MATCH
+//		(semaphore:Semaphore)<-[:exit]-(route1:Route)-[:requires]->(sensor1:Sensor),
+//		(sensor1)<-[:monitoredBy]-(te1)-[:connectsTo]->(te2)-[:monitoredBy]->(sensor2:Sensor)<-[:requires]-(route2:Route)
+//	WHERE NOT (semaphore)<-[:entry]-(route2)
+//	AND route1 <> route2
+//	RETURN DISTINCT semaphore, route1, route2, sensor1, sensor2, te1, te2
+
 	@Test
-	public void testOneVariableExistsMultipleTimesInAFilter() {
-		String matchQuery = "MATCH (v1)-[e1:FOLLOWS]->(v2),(v2)-[e2:FOLLOWS]->(v3),(v3)" +
-			"-[:FOLLOWS]->(v1) WHERE v1.views > v2.views AND v1.views > v3.views " +
-			"RETURN v1, v2, v3;";
-		Object[][] expectedResults = {{3, 0, 1}, {3, 4, 1}, {5, 4, 1}};
-		runTest(matchQuery, expectedResults);
+	public void testSemaphoreNeighbor(){
+
+		System.out.println("\n==========SWITCH_INJECT==========");
+
+		String matchQuery = "MATCH (route1:Route)-[:exit]->(semaphore:Semaphore)," +
+			"(route1)-[:requires]->(sensor1:Sensor)," +
+			"(te1)-[:monitoredBy]->(sensor1)," +
+			"(te1)-[:connectsTo]->(te2)," +
+			"(te2)-[:monitoredBy]->(sensor2:Sensor)," +
+			"(route2:Route)-[:requires]->(sensor2) " +
+			"WHERE NOT " +
+			"(route2)-[:entry]->(semaphore) " +
+			"AND route1 <> route2 " +
+			"RETURN semaphore, route1, route2, sensor1, sensor2, te1, te2;";
+
+		System.out.println(matchQuery);
+
+		run(matchQuery);
+	}
+
+	private List<String> run(String query) {
+		InMemoryOutputSink inMemoryOutputSink = new InMemoryOutputSink();
+		((OneTimeMatchQueryPlan) new OneTimeMatchQueryPlanner(new StructuredQueryParser().parse(
+			query), inMemoryOutputSink).plan()).execute();
+
+			System.out.println("RESULT:  " + inMemoryOutputSink.getResults());
+			return inMemoryOutputSink.getResults();
 	}
 
 	private void runTest(String query, Object[][] expectedResults) {
@@ -124,19 +173,17 @@ public class GraphflowExpoerimentTest {
 	}
 
 	private void constructGraph() {
-		initializeGraphPermanentlyWithProperties("CREATE " +
-			"(0:Person { name: 'name0', age: 20, views: 120 })" +
-			"-[:FOLLOWS { views: 250, is_friends: true }]->" +
-			"(1:Person { name: 'name1', age: 25, views: 70 })," +
-			"(1:Person)-[:FOLLOWS { views: 12, is_friends: true }]->(0:Person)," +
-			"(1:Person)-[:FOLLOWS { views: 40, is_friends: false }]->" +
-			"(3:Person { name: 'name3', age: 22, views: 250 })," +
-			"(3:Person)-[:FOLLOWS { views: 70, is_friends: true }]->(0:Person), " +
-			"(4:Person { name: 'name4', age: 40, views: 20 })-" +
-			"[:FOLLOWS { views: 45, is_friends: true }]->(1:Person)," +
-			"(3:Person)-[:FOLLOWS { views: 50, is_friends: true }]->(4:Person)," +
-			"(5:Person { name: 'name5', age: 30, views: 120 })-" +
-			"[:FOLLOWS { views: 35, is_friends: true }]->(4:Person)," +
-			"(1:Person)-[:FOLLOWS { views: 250, is_friends: false }]->(5:Person);");
+		final File cypherFile = new File("../models/railway-batch-1.graphflow");
+
+		try {
+			BufferedReader bufferedReader = new BufferedReader(new FileReader(cypherFile));
+			String line;
+
+			while ((line = bufferedReader.readLine()) != null) {
+				new CreateQueryPlanner(new StructuredQueryParser().parse(line)).plan().execute();
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 }
