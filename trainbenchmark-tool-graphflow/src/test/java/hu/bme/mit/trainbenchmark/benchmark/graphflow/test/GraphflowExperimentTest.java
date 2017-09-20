@@ -112,16 +112,17 @@ public class GraphflowExperimentTest {
 
 		System.out.println("\n==========SWITCH_INJECT==========");
 
-		String matchQuery = "MATCH (route1:Route)-[:exit]->(semaphore:Semaphore)," +
-			"(route1)-[:requires]->(sensor1:Sensor)," +
-			"(te1)-[:monitoredBy]->(sensor1)," +
-			"(te1)-[:connectsTo]->(te2)," +
-			"(te2)-[:monitoredBy]->(sensor2:Sensor)," +
-			"(route2:Route)-[:requires]->(sensor2) " +
-			"WHERE NOT " +
-			"(route2)-[:entry]->(semaphore) " +
-			"AND route1.id <> route2.id " +
-			"RETURN semaphore, route1, route2, sensor1, sensor2, te1, te2;";
+		// note that Graphflow only supports a single label for each node
+		String matchQuery = "MATCH (route1:Route)-[:exit]->(semaphore:Semaphore), " +
+			"(route1)-[:requires]->(sensor1:Sensor), " +
+			"(te1)-[:monitoredBy]->(sensor1) " + // this already causes 0 results
+//			"(te1)-[:connectsTo]->(te2)," +
+//			"(te2)-[:monitoredBy]->(sensor2:Sensor)," +
+//			"(route2:Route)-[:requires]->(sensor2) " +
+//			"WHERE NOT (route2)-[:entry]->(semaphore) " +
+//			"AND route1.id <> route2.id " + // Graphflow cannot compare whole nodes and id attributes are not loaded yet
+//			"RETURN semaphore, route1, route2, sensor1, sensor2, te1, te2;";
+            "RETURN route1, semaphore";
 
 		System.out.println(matchQuery);
 
@@ -133,8 +134,9 @@ public class GraphflowExperimentTest {
 		((OneTimeMatchQueryPlan) new OneTimeMatchQueryPlanner(new StructuredQueryParser().parse(
 			query), inMemoryOutputSink).plan()).execute();
 
-			System.out.println("RESULT:  " + inMemoryOutputSink.getResults());
-			return inMemoryOutputSink.getResults();
+        System.out.println("RESULT: " + inMemoryOutputSink.getResults().size());
+        System.out.println("  " + inMemoryOutputSink.getResults());
+        return inMemoryOutputSink.getResults();
 	}
 
 	private void runTest(String query, Object[][] expectedResults) {
