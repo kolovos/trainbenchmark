@@ -227,7 +227,7 @@ public class CypherSerializer extends ModelSerializer<CypherGeneratorConfig> {
 		}
 	}
 
-	@Override
+//	@Override
 	public void setAttribute(final String type, final Object node, final String key, final Object value) throws IOException {
 		final String stringValue = valueToString(value);
 		switch (gc.getCypherFormat()){

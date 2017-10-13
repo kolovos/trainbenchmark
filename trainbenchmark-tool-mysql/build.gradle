@@ -1,4 +1,4 @@
-plugins { id "com.github.johnrengelman.shadow" version "1.2.3" }
+apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
 	classifier = 'fat'
@@ -8,5 +8,5 @@ shadowJar {
 dependencies {
 	compile project(':trainbenchmark-tool')
 	compile project(':trainbenchmark-tool-sql')
-	compile group: 'mysql', name: 'mysql-connector-java', version:'5.1.38'
+	compile group: 'mysql', name: 'mysql-connector-java', version: mySqlConnectorVersion
 }

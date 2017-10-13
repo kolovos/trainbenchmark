@@ -17,7 +17,6 @@ import hu.bme.mit.trainbenchmark.benchmark.neo4j.matches.Neo4jSwitchMonitoredInj
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.transformations.Neo4jCypherTransformation;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
-import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -35,7 +34,7 @@ public class Neo4jCypherTransformationInjectSwitchMonitored
 	public void activate(final Collection<Neo4jSwitchMonitoredInjectMatch> matches) throws IOException {
 		for (final Neo4jSwitchMonitoredInjectMatch match : matches) {
 			final Map<String, Object> parameters = ImmutableMap.of( //
-					QueryConstants.VAR_SW, match.getSw().getProperty(Neo4jConstants.ID) //
+					QueryConstants.VAR_SW, match.getSw() //
 			);
 			driver.runTransformation(transformationDefinition, parameters);
 		}

@@ -11,17 +11,17 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.tinkergraph.transformations.repair;
 
-import static hu.bme.mit.trainbenchmark.constants.ModelConstants.ENTRY;
+import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.driver.GraphDriver;
+import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.matches.TinkerGraphSemaphoreNeighborMatch;
+import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.transformations.TinkerGraphTransformation;
+import org.apache.tinkerpop.gremlin.structure.Direction;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import java.util.Collection;
 
-import org.apache.tinkerpop.gremlin.structure.Vertex;
+import static hu.bme.mit.trainbenchmark.constants.ModelConstants.ENTRY;
 
-import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.driver.TinkerGraphDriver;
-import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.matches.TinkerGraphSemaphoreNeighborMatch;
-import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.transformations.TinkerGraphTransformation;
-
-public class TinkerGraphTransformationRepairSemaphoreNeighbor<TTinkerGraphDriver extends TinkerGraphDriver>
+public class TinkerGraphTransformationRepairSemaphoreNeighbor<TTinkerGraphDriver extends GraphDriver>
 		extends TinkerGraphTransformation<TinkerGraphSemaphoreNeighborMatch, TTinkerGraphDriver> {
 
 	public TinkerGraphTransformationRepairSemaphoreNeighbor(final TTinkerGraphDriver driver) {
@@ -30,10 +30,12 @@ public class TinkerGraphTransformationRepairSemaphoreNeighbor<TTinkerGraphDriver
 
 	@Override
 	public void activate(final Collection<TinkerGraphSemaphoreNeighborMatch> matches) {
-		for (final TinkerGraphSemaphoreNeighborMatch snm : matches) {
-			final Vertex semaphore = snm.getSemaphore();
-			final Vertex route2 = snm.getRoute2();
-			route2.addEdge(ENTRY, semaphore);
+		for (final TinkerGraphSemaphoreNeighborMatch match : matches) {
+			final Vertex semaphore = match.getSemaphore();
+			final Vertex route2 = match.getRoute2();
+			if (!route2.edges(Direction.OUT, ENTRY).hasNext()) {
+				route2.addEdge(ENTRY, semaphore);
+			}
 		}
 	}
 

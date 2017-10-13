@@ -11,11 +11,11 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.emf.transformation.repair;
 
-import java.util.Collection;
-
 import hu.bme.mit.trainbenchmark.benchmark.emf.driver.EmfDriver;
 import hu.bme.mit.trainbenchmark.benchmark.emf.matches.EmfSwitchSetMatch;
 import hu.bme.mit.trainbenchmark.benchmark.emf.transformation.EmfTransformation;
+
+import java.util.Collection;
 
 public class EmfTransformationRepairSwitchSet<TDriver extends EmfDriver, TSwitchSetMatch extends EmfSwitchSetMatch>
 		extends EmfTransformation<TSwitchSetMatch, TDriver> {
@@ -26,8 +26,8 @@ public class EmfTransformationRepairSwitchSet<TDriver extends EmfDriver, TSwitch
 
 	@Override
 	public void activate(final Collection<TSwitchSetMatch> matches) {
-		for (final EmfSwitchSetMatch sstm : matches) {
-			sstm.getSw().setCurrentPosition(sstm.getSwP().getPosition());
+		for (final EmfSwitchSetMatch match : matches) {
+			match.getSw().setCurrentPosition(match.getSwP().getPosition());
 		}
 	}
 

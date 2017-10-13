@@ -11,17 +11,16 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.tinkergraph.transformations.repair;
 
-import static hu.bme.mit.trainbenchmark.constants.ModelConstants.CURRENTPOSITION;
+import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.driver.GraphDriver;
+import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.matches.TinkerGraphSwitchSetMatch;
+import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.transformations.TinkerGraphTransformation;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 import java.util.Collection;
 
-import org.apache.tinkerpop.gremlin.structure.Vertex;
+import static hu.bme.mit.trainbenchmark.constants.ModelConstants.CURRENTPOSITION;
 
-import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.driver.TinkerGraphDriver;
-import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.matches.TinkerGraphSwitchSetMatch;
-import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.transformations.TinkerGraphTransformation;
-
-public class TinkerGraphTransformationRepairSwitchSet<TTinkerGraphDriver extends TinkerGraphDriver>
+public class TinkerGraphTransformationRepairSwitchSet<TTinkerGraphDriver extends GraphDriver>
 		extends TinkerGraphTransformation<TinkerGraphSwitchSetMatch, TTinkerGraphDriver> {
 
 	public TinkerGraphTransformationRepairSwitchSet(final TTinkerGraphDriver driver) {
@@ -30,9 +29,9 @@ public class TinkerGraphTransformationRepairSwitchSet<TTinkerGraphDriver extends
 
 	@Override
 	public void activate(final Collection<TinkerGraphSwitchSetMatch> matches) {
-		for (final TinkerGraphSwitchSetMatch sstm : matches) {
-			final Vertex sw = sstm.getSw();
-			final String position = sstm.getPosition();
+		for (final TinkerGraphSwitchSetMatch match : matches) {
+			final Vertex sw = match.getSw();
+			final String position = match.getPosition();
 			sw.property(CURRENTPOSITION, position);
 		}
 	}

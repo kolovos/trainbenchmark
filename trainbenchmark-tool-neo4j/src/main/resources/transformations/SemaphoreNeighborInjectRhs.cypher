@@ -1,4 +1,3 @@
+WITH $route AS route, $semaphore AS semaphore
 MATCH (route)-[e:entry]->(semaphore)
-WHERE route.id = $route
-  AND semaphore.id = $semaphore
 DELETE e

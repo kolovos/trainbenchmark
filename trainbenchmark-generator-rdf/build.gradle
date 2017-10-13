@@ -1,4 +1,4 @@
-plugins { id "com.github.johnrengelman.shadow" version "1.2.3" }
+apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
 	classifier = 'fat'
@@ -6,7 +6,6 @@ shadowJar {
 }
 
 dependencies {
-	def sesameVersion = '2.7.10'
 	compile project(':trainbenchmark-generator')
 	compile project(':trainbenchmark-format-rdf')
 	compile group: 'org.slf4j', name: 'slf4j-nop', version: slf4jVersion

@@ -1,4 +1,4 @@
-plugins { id "com.github.johnrengelman.shadow" version "1.2.3" }
+apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
 	classifier = 'fat'
@@ -8,5 +8,7 @@ shadowJar {
 dependencies {
 	compile project(':trainbenchmark-tool')
 	compile group: 'org.apache.tinkerpop', name: 'tinkergraph-gremlin', version: tinkerGraphVersion
+	compile group: 'org.apache.tinkerpop', name: 'gremlin-core', version: tinkerGraphVersion
+	compile group: 'org.apache.tinkerpop', name: 'gremlin-groovy', version: tinkerGraphVersion
 	compile group: 'org.slf4j', name: 'slf4j-nop', version: slf4jVersion
 }
