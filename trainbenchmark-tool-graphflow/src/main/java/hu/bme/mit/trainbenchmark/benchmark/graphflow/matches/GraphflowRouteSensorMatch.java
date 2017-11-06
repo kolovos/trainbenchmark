@@ -11,7 +11,7 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.matches;
 
-import ca.waterloo.dsg.graphflow.query.operator.udf.subgraph.Vertex;
+import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
 import hu.bme.mit.trainbenchmark.benchmark.matches.RouteSensorMatch;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 

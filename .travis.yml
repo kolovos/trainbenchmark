@@ -3,6 +3,10 @@ jdk:
   - oraclejdk8
 install: true
 script:
+  - git clone https://github.com/graphflow/graphflow
+  - cd graphflow
+  - ./gradlew publishToMavenLocal
+  - cd ..
   - scripts/get-neo4j.sh
   # excluding tests for the SQL generator as they require full control over a MySQL instance
   - ./gradlew inits build -x :trainbenchmark-generator-sql:test -x :trainbenchmark-tool-mysql:test --stacktrace --continue

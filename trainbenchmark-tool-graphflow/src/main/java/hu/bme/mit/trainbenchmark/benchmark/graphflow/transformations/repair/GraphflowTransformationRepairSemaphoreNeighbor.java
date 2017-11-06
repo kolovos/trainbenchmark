@@ -15,9 +15,9 @@ import com.google.common.collect.ImmutableMap;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.driver.GraphflowDriver;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowSemaphoreNeighborMatch;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.transformations.GraphflowTransformation;
+import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
-import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -33,8 +33,8 @@ public class GraphflowTransformationRepairSemaphoreNeighbor extends GraphflowTra
 	public void activate(final Collection<GraphflowSemaphoreNeighborMatch> matches) throws IOException {
 		for (final GraphflowSemaphoreNeighborMatch match : matches) {
 			final Map<String, Object> parameters = ImmutableMap.of(//
-					QueryConstants.VAR_ROUTE2, match.getRoute2().getProperty(Neo4jConstants.ID), //
-					QueryConstants.VAR_SEMAPHORE, match.getSemaphore().getProperty(Neo4jConstants.ID) //
+					QueryConstants.VAR_ROUTE2, match.getRoute2().getProperty(ModelConstants.ID), //
+					QueryConstants.VAR_SEMAPHORE, match.getSemaphore().getProperty(ModelConstants.ID) //
 			);
 			driver.runTransformation(transformationDefinition, parameters);
 		}

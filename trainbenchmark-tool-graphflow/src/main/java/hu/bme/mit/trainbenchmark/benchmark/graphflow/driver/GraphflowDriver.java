@@ -11,13 +11,13 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.driver;
 
+import ca.waterloo.dsg.graphflow.server.GraphflowServer;
 import hu.bme.mit.trainbenchmark.benchmark.driver.Driver;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.comparators.NodeComparator;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowMatch;
 import hu.bme.mit.trainbenchmark.constants.RailwayQuery;
 import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
 import org.apache.commons.io.FileUtils;
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 
@@ -27,8 +27,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
-
-import ca.waterloo.dsg.graphflow.server.GraphflowServer;
 
 public class GraphflowDriver extends Driver {
 
@@ -78,6 +76,11 @@ public class GraphflowDriver extends Driver {
 	@Override
 	public String getPostfix() {
 		return Neo4jConstants.QUERY_EXTENSION;
+	}
+
+	@Override
+	public Number generateNewVertexId() throws Exception {
+		return null;
 	}
 
 	public Collection<GraphflowMatch> runQuery(final RailwayQuery query, final String queryDefinition) throws IOException {

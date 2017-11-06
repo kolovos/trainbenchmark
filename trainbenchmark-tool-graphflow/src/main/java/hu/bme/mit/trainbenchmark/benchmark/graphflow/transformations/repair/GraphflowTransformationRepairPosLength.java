@@ -15,9 +15,9 @@ import com.google.common.collect.ImmutableMap;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.driver.GraphflowDriver;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowPosLengthMatch;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.transformations.GraphflowTransformation;
+import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
-import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
 import org.neo4j.graphdb.NotFoundException;
 
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class GraphflowTransformationRepairPosLength extends GraphflowTransformat
 		for (final GraphflowPosLengthMatch match : matches) {
 			try {
 				final Map<String, Object> parameters = ImmutableMap.of( //
-					QueryConstants.VAR_SEGMENT, match.getSegment().getProperty(Neo4jConstants.ID) //
+					QueryConstants.VAR_SEGMENT, match.getSegment().getProperty(ModelConstants.ID) //
 				);
 				driver.runTransformation(transformationDefinition, parameters);
 			} catch (final NotFoundException e) {
