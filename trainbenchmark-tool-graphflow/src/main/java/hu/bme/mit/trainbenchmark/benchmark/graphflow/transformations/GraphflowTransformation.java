@@ -1,10 +1,10 @@
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.transformations;
 
+import hu.bme.mit.trainbenchmark.benchmark.graphflow.GraphflowConstants;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.driver.GraphflowDriver;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowMatch;
 import hu.bme.mit.trainbenchmark.benchmark.operations.ModelTransformation;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
-import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -19,8 +19,9 @@ public abstract class GraphflowTransformation<TGraphflowMatch extends GraphflowM
 								   final RailwayOperation operation) throws IOException {
 		super(driver);
 
-		this.transformationDefinition = FileUtils.readFileToString(new File(workspaceDir + Neo4jConstants.CYPHER_DIR
-				+ "transformations/" + operation + "Rhs." + Neo4jConstants.QUERY_EXTENSION));
+		this.transformationDefinition =
+			FileUtils.readFileToString(new File(workspaceDir + GraphflowConstants.CYPHER_DIR
+				+ "transformations/" + operation + "Rhs." + GraphflowConstants.QUERY_EXTENSION));
 	}
 
 }

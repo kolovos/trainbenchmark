@@ -11,61 +11,30 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.driver;
 
-import ca.waterloo.dsg.graphflow.server.GraphflowServer;
 import hu.bme.mit.trainbenchmark.benchmark.driver.Driver;
-import hu.bme.mit.trainbenchmark.benchmark.graphflow.comparators.NodeComparator;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowMatch;
 import hu.bme.mit.trainbenchmark.constants.RailwayQuery;
-import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
 import org.apache.commons.io.FileUtils;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Transaction;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Map;
 
 public class GraphflowDriver extends Driver {
 
-	protected Transaction tx;
-	protected GraphflowServer graphDb;
-	protected final Comparator<Node> nodeComparator = new NodeComparator();
-	protected final File databaseDirectory;
-
 	public GraphflowDriver(final String modelDir) throws IOException {
 		super();
-		this.databaseDirectory = new File(modelDir + "/neo4j-dbs/railway-database");
 	}
 
 	@Override
 	public void initialize() throws Exception {
 		super.initialize();
-
-		// delete old database directory
-		if (databaseDirectory.exists()) {
-			FileUtils.deleteDirectory(databaseDirectory);
-		}
 	}
 
 	@Override
 	public void destroy() {
-		if (graphDb != null) {
-			//graphDb.stop();
-		}
-	}
-
-//	@Override
-//	public void beginTransaction() {
-//		tx = graphDb.beginTx();
-//	}
-
-	@Override
-	public void finishTransaction() {
-		tx.success();
-		tx.close();
 	}
 
 	@Override
@@ -75,7 +44,7 @@ public class GraphflowDriver extends Driver {
 
 	@Override
 	public String getPostfix() {
-		return Neo4jConstants.QUERY_EXTENSION;
+		return "cypher";
 	}
 
 	@Override

@@ -18,7 +18,6 @@ import hu.bme.mit.trainbenchmark.benchmark.graphflow.transformations.GraphflowTr
 import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
-import org.neo4j.graphdb.NotFoundException;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -33,14 +32,10 @@ public class GraphflowTransformationRepairPosLength extends GraphflowTransformat
 	@Override
 	public void activate(final Collection<GraphflowPosLengthMatch> matches) throws IOException {
 		for (final GraphflowPosLengthMatch match : matches) {
-			try {
-				final Map<String, Object> parameters = ImmutableMap.of( //
-					QueryConstants.VAR_SEGMENT, match.getSegment().getProperty(ModelConstants.ID) //
-				);
-				driver.runTransformation(transformationDefinition, parameters);
-			} catch (final NotFoundException e) {
-				// do nothing (node has been removed)
-			}
+			final Map<String, Object> parameters = ImmutableMap.of( //
+				QueryConstants.VAR_SEGMENT, match.getSegment().getProperty(ModelConstants.ID) //
+			);
+			driver.runTransformation(transformationDefinition, parameters);
 		}
 	}
 

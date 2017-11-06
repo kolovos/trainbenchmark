@@ -11,11 +11,11 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.queries;
 
+import hu.bme.mit.trainbenchmark.benchmark.graphflow.GraphflowConstants;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.driver.GraphflowDriver;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowMatch;
 import hu.bme.mit.trainbenchmark.benchmark.operations.ModelQuery;
 import hu.bme.mit.trainbenchmark.constants.RailwayQuery;
-import hu.bme.mit.trainbenchmark.neo4j.Neo4jConstants;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -33,7 +33,7 @@ public class GraphflowQuery<TGraphflowMatch extends GraphflowMatch> extends Mode
 
 		this.query = query;
 		this.queryDefinition = FileUtils.readFileToString(new File(
-				workspaceDir + Neo4jConstants.CYPHER_DIR + "queries/" + query + "." + Neo4jConstants.QUERY_EXTENSION));
+				workspaceDir + GraphflowConstants.CYPHER_DIR + "queries/" + query + "." + GraphflowConstants.QUERY_EXTENSION));
 	}
 
 	@SuppressWarnings("unchecked")

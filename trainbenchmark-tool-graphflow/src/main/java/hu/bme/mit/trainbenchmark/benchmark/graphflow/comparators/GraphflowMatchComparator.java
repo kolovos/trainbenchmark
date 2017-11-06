@@ -11,15 +11,14 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.comparators;
 
-import org.neo4j.graphdb.Node;
-
-import hu.bme.mit.trainbenchmark.benchmark.matches.comparators.BaseMatchComparator;
+import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowMatch;
+import hu.bme.mit.trainbenchmark.benchmark.matches.comparators.BaseMatchComparator;
 
-public class GraphflowMatchComparator extends BaseMatchComparator<GraphflowMatch, Node> {
+public class GraphflowMatchComparator extends BaseMatchComparator<GraphflowMatch, Vertex> {
 
 	public GraphflowMatchComparator() {
-		super(new NodeComparator());
+		super(new VertexComparator());
 	}
 
 }

@@ -12,6 +12,5 @@ repositories {
 
 dependencies {
 	compile project(':trainbenchmark-tool')
-	compile project(':trainbenchmark-format-graph-neo4j')
 	compile group: 'ca.waterloo.dsg', name: 'graphflow', version: '0.1.0'
 }

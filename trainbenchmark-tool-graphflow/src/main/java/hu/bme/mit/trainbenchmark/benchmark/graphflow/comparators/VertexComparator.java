@@ -11,18 +11,16 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.comparators;
 
-import org.neo4j.graphdb.Node;
+import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
 
 import java.util.Comparator;
 
-public class NodeComparator implements Comparator<Node> {
+public class VertexComparator implements Comparator<Vertex> {
 
 	@Override
-	public int compare(final Node node1, final Node node2) {
-//		final long id1 = node1.getProperty(ModelConstants.ID);
-//		final long id2 = node2.getProperty(ModelConstants.ID);
-		final long id1 = node1.getId();
-		final long id2 = node2.getId();
+	public int compare(final Vertex vertex1, final Vertex vertex2) {
+		final long id1 = vertex1.getId();
+		final long id2 = vertex2.getId();
 		return Long.compare(id1, id2);
 	}
 
