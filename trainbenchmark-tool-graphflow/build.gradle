@@ -6,10 +6,6 @@ shadowJar {
 	manifest { attributes 'Main-Class': 'hu.bme.mit.trainbenchmark.benchmark.graphflow.GraphflowBenchmarkMain' }
 }
 
-repositories {
-	mavenLocal()
-}
-
 dependencies {
 	compile project(':trainbenchmark-tool')
 	compile group: 'ca.waterloo.dsg', name: 'graphflow', version: '0.1.0'
