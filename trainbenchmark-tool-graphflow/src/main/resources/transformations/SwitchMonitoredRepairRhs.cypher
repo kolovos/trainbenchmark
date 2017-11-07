@@ -1,3 +1,2 @@
-MATCH (sw)
-WHERE sw.id = $sw
-CREATE (sw)-[:monitoredBy]->(:Sensor)
+WITH $sw AS sw
+CREATE (sw)-[:monitoredBy]->(:Sensor {id: $id})

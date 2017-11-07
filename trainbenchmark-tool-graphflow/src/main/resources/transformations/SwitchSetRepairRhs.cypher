@@ -1,4 +1,2 @@
-MATCH (sw), (swP)
-WHERE sw.id = $sw
-  AND swP.id = $swP
+WITH $sw AS sw, $swP AS swP
 SET sw.currentPosition = swP.position

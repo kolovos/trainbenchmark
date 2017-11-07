@@ -11,12 +11,13 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.driver;
 
+import ca.waterloo.dsg.graphflow.query.QueryProcessor;
+import ca.waterloo.dsg.graphflow.query.result.QueryResult;
+import ca.waterloo.dsg.graphflow.server.ServerQueryString;
 import hu.bme.mit.trainbenchmark.benchmark.driver.Driver;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowMatch;
 import hu.bme.mit.trainbenchmark.constants.RailwayQuery;
-import org.apache.commons.io.FileUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,8 +25,10 @@ import java.util.Map;
 
 public class GraphflowDriver extends Driver {
 
-	public GraphflowDriver(final String modelDir) throws IOException {
+	public GraphflowDriver() throws IOException {
 		super();
+
+
 	}
 
 	@Override
@@ -55,7 +58,19 @@ public class GraphflowDriver extends Driver {
 	public Collection<GraphflowMatch> runQuery(final RailwayQuery query, final String queryDefinition) throws IOException {
 		final Collection<GraphflowMatch> results = new ArrayList<>();
 
-		// TODO
+		final ServerQueryString queryString = ServerQueryString.newBuilder().setQuery("MATCH (n) RETURN n").build();
+		final QueryProcessor processor = new QueryProcessor();
+		final QueryResult queryResult = processor.process(queryString);
+
+		/**
+		 * MATCH
+		 *   (p1)-[K]->(p2),
+		 *   (p2)-[L]->(c)
+		 *
+		 * MATCH
+		 *   (p2)-[L]->(c),
+		 *   (p1)-[K]->(p2)
+		 */
 
 		return results;
 	}

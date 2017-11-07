@@ -13,7 +13,7 @@ public class GraphflowDriverFactory extends DriverFactory<GraphflowDriver> {
 
 	@Override
 	public GraphflowDriver createInstance() throws Exception {
-		return new GraphflowDriver(modelDir);
+		return new GraphflowDriver();
 	}
 
 }
