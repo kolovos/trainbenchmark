@@ -3,10 +3,19 @@
   :param { country: 'Spain' }
 */
 MATCH (country:Country {name: $country})
-MATCH (a:Person)-[:isLocatedIn]->(:City)-[:isPartOf]->(country)
-MATCH (b:Person)-[:isLocatedIn]->(:City)-[:isPartOf]->(country)
-MATCH (c:Person)-[:isLocatedIn]->(:City)-[:isPartOf]->(country)
-MATCH (a)-[:knows]-(b), (b)-[:knows]-(c), (c)-[:knows]-(a)
+MATCH
+  (a:Person)-[:isLocatedIn]->(cityA:City)
+  (cityA)-[:isPartOf]->(country)
+MATCH
+  (b:Person)-[:isLocatedIn]->(cityB:City),
+  (cityB)-[:isPartOf]->(country)
+MATCH
+  (c:Person)-[:isLocatedIn]->(cityC:City),
+  (cityC)-[:isPartOf]->(country)
+MATCH
+  (a)-[:knows]-(b),
+  (b)-[:knows]-(c),
+  (c)-[:knows]-(a)
 WHERE a.id < b.id
   AND b.id < c.id
 RETURN count(*)

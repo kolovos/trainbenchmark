@@ -3,10 +3,14 @@
   :param { tag: 'Franz_Liszt' }
 */
 MATCH
-  (tag:Tag {name: $tag})<-[:hasTag]-(:Message)-[:hasCreator]->(person1:Person)
+  (message1:Message)-[:hasTag]->(tag:Tag {name: $tag}),
+  (message1)-[:hasCreator]->(person1:Person)
 MATCH
-  (person1)<-[:hasCreator]-(message:Message)-[:hasTag]->(tag),
-  (message)<-[:likes]-(person2:Person)<-[:hasCreator]-(:Message)<-[l:likes]-(person3:Person)
+  (message2:Message)-[:hasCreator]->(person1),
+  (message2)-[:hasTag]->(tag),
+  (person2:Person)-[:likes]->(message2),
+  (message3:Message)-[:hasCreator]->(person2),
+  (person3:Person)-[l:likes]->(message3)
 RETURN
   person1.id,
   count(l) AS authorityScore

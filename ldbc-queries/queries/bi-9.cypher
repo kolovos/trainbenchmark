@@ -7,9 +7,12 @@
   }
 */
 MATCH
-  (forum:Forum),
-  (forum)-[:containerOf]->(post1:Post)-[:hasTag]->(:Tag)-[:hasType]->(:TagClass {name: $tagClass1}),
-  (forum)-[:containerOf]->(post2:Post)-[:hasTag]->(:Tag)-[:hasType]->(:TagClass {name: $tagClass2}),
+  (forum:Forum)-[:containerOf]->(post1:Post),
+  (post1)-[:hasTag]->(tag1:Tag),
+  (tag1)-[:hasType]->(:TagClass {name: $tagClass1}),
+  (forum)-[:containerOf]->(post2:Post),
+  (post2)-[:hasTag]->(tag2:Tag),
+  (tag2)-[:hasType]->(:TagClass {name: $tagClass2}),
   (forum)-[:hasMember]->(person:Person)
 WITH
   forum,

@@ -25,8 +25,8 @@ RETURN
   person.id,
   tag.name,
   count(message) AS messageCount
-//ORDER BY
-//  messageCount DESC,
-//  tag.name ASC,
-//  person.id ASC
-//LIMIT 100
+ORDER BY
+  messageCount DESC,
+  tag.name ASC,
+  person.id ASC
+LIMIT 100

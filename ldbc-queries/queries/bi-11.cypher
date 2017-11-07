@@ -6,11 +6,13 @@
   }
 */
 MATCH
-  (country:Country {name: $country})<-[:isPartOf]-(:City)<-[:isLocatedIn]-
-  (person:Person)<-[:hasCreator]-(message:Message)<-[:replyOf]-(reply:Comment),
+  (city:City)-[:isPartOf]->(country:Country {name: $country}),
+  (person:Person)-[:isLocatedIn]->(city),
+  (message:Message)-[:hasCreator]->(person),
+  (reply:Comment)-[:replyOf]->(message),
   (message)-[:hasTag]->(tag:Tag),
   (fan:Person)-[:likes]->(reply)
-WHERE NOT (tag)<-[:hasTag]-(reply)
+WHERE NOT (reply)-[:hasTag]->(tag)
 RETURN
   person.id,
   tag.name,

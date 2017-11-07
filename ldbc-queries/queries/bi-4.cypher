@@ -6,15 +6,21 @@
   }
 */
 MATCH
-  (:Country {name: $country})<-[:isPartOf]-(:City)<-[:isLocatedIn]-
-  (person:Person)<-[:hasModerator]-(forum:Forum)-[:containerOf]->
-  (post:Post)-[:hasTag]->(:Tag)-[:hasType]->(:TagClass {name: $tagClass})
+  (city:City)-[:isPartOf]->(country {name: $country}),
+  (person:Person)-[:isLocatedIn]->(city:City),
+  (forum:Forum)-[:hasModerator]->(person:Person),
+  (forum)-[:containerOf]->(post:Post),
+  (post)-[:hasTag]->(tag:Tag),
+  (tag)-[:hasType]->(tagClass:TagClass {name: $tagClass})
 RETURN
   forum.id,
   forum.title,
   forum.creationDate,
   person.id,
-  count(DISTINCT post) AS postCount
+  count(post) AS postCount
+//  count(DISTINCT post) AS postCount
+
+
 //ORDER BY
 //  postCount DESC,
 //  forum.id ASC
