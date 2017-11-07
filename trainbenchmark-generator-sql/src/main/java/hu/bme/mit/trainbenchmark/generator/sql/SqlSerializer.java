@@ -12,6 +12,21 @@
 
 package hu.bme.mit.trainbenchmark.generator.sql;
 
+import hu.bme.mit.trainbenchmark.generator.ModelSerializer;
+import hu.bme.mit.trainbenchmark.generator.sql.config.SqlGeneratorConfig;
+import hu.bme.mit.trainbenchmark.sql.constants.SqlConstants;
+import hu.bme.mit.trainbenchmark.sql.process.MySqlProcess;
+import org.apache.commons.io.FileUtils;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import static hu.bme.mit.trainbenchmark.constants.ModelConstants.CONNECTS_TO;
 import static hu.bme.mit.trainbenchmark.constants.ModelConstants.ELEMENTS;
 import static hu.bme.mit.trainbenchmark.constants.ModelConstants.FOLLOWS;
@@ -25,22 +40,6 @@ import static hu.bme.mit.trainbenchmark.constants.ModelConstants.SENSORS;
 import static hu.bme.mit.trainbenchmark.constants.ModelConstants.SUPERTYPES;
 import static hu.bme.mit.trainbenchmark.constants.ModelConstants.SWITCHPOSITION;
 import static hu.bme.mit.trainbenchmark.constants.ModelConstants.TRACKELEMENT;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.apache.commons.io.FileUtils;
-
-import hu.bme.mit.trainbenchmark.generator.ModelSerializer;
-import hu.bme.mit.trainbenchmark.generator.sql.config.SqlGeneratorConfig;
-import hu.bme.mit.trainbenchmark.sql.constants.SqlConstants;
-import hu.bme.mit.trainbenchmark.sql.process.MySqlProcess;
 
 public class SqlSerializer extends ModelSerializer<SqlGeneratorConfig> {
 
@@ -107,12 +106,30 @@ public class SqlSerializer extends ModelSerializer<SqlGeneratorConfig> {
 		log("Loading the raw model");
 		MySqlProcess.runShell(String.format("mysql -u %s < %s", SqlConstants.USER, sqlRawPath));
 
-		final String mysqlDumpPath = gc.getConfigBase().getModelPathWithoutExtension() + "-mysql.sql";
-		final String commandDump = "mysqldump -u " + SqlConstants.USER + " --databases trainbenchmark --skip-dump-date --skip-comments > " + mysqlDumpPath;
-		MySqlProcess.runShell(commandDump);
+		final String mySqlDumpCommandBase = //
+			"mysqldump -u " + SqlConstants.USER + " --skip-dump-date --skip-comments --default-character-set=utf8";
 
+		// dump to standard MySQL format
+		final String mySqlDumpPath = gc.getConfigBase().getModelPathWithoutExtension() + "-mysql.sql";
+		final String mySqlDumpCommand = mySqlDumpCommandBase + //
+			" --database trainbenchmark > " + mySqlDumpPath;
+		MySqlProcess.runShell(mySqlDumpCommand);
+
+		// dump to CSV format
+		final String csvDumpPath = gc.getConfigBase().getModelPathWithoutExtension() + "-csv/";
+		final File csvDumpDirectory = new File(csvDumpPath);
+		csvDumpDirectory.mkdir();
+		csvDumpDirectory.setExecutable(true, false);
+		csvDumpDirectory.setReadable(true, false);
+		csvDumpDirectory.setWritable(true, false);
+
+		final String csvDumpCommand = mySqlDumpCommandBase + //
+			" --fields-terminated-by=, --tab=\"" + csvDumpPath + "\" trainbenchmark";
+		MySqlProcess.runShell(csvDumpCommand);
+
+		// convert MySQL dump to SQLite-compatible format
 		final String sqliteDumpPath = gc.getConfigBase().getModelPathWithoutExtension() + "-sqlite.sql";
-		final String sqliteDump = gc.getConfigBase().getWorkspaceDir() + SQL_SCRIPT_DIR + "mysql2sqlite.sh " + mysqlDumpPath + " > " + sqliteDumpPath;
+		final String sqliteDump = gc.getConfigBase().getWorkspaceDir() + SQL_SCRIPT_DIR + "mysql2sqlite.sh " + csvDumpPath + " > " + sqliteDumpPath;
 		MySqlProcess.runShell(sqliteDump);
 	}
 

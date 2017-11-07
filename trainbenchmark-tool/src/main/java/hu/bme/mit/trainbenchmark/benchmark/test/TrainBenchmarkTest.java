@@ -27,10 +27,10 @@ public abstract class TrainBenchmarkTest {
 	protected final int smallSize = 1;
 	protected final int largeSize = 2;
 
-	final BenchmarkConfigBaseBuilder bcbb = new BenchmarkConfigBaseBuilder().setBenchmarkId(benchmarkId)
+	protected final BenchmarkConfigBaseBuilder bcbb = new BenchmarkConfigBaseBuilder().setBenchmarkId(benchmarkId)
 			.setTimeout(timeout).setRuns(runs);
 
-	final BenchmarkConfigBaseBuilder bcbbTransformation = bcbb
+	protected final BenchmarkConfigBaseBuilder bcbbTransformation = bcbb
 			.setTransformationChangeSetStrategy(TransformationChangeSetStrategy.FIXED).setTransformationConstant(10)
 			.setQueryTransformationCount(2);
 
@@ -103,9 +103,9 @@ public abstract class TrainBenchmarkTest {
 		collector.checkThat(allMatches.get(RailwayQuery.POSLENGTH        ).get(0), Matchers.equalTo(12));
 		collector.checkThat(allMatches.get(RailwayQuery.POSLENGTH        ).get(1), Matchers.equalTo(22));
 		collector.checkThat(allMatches.get(RailwayQuery.ROUTESENSOR      ).get(0), Matchers.equalTo(7));
-		collector.checkThat(allMatches.get(RailwayQuery.ROUTESENSOR      ).get(1), Matchers.equalTo(8));
+		collector.checkThat(allMatches.get(RailwayQuery.ROUTESENSOR      ).get(1), Matchers.equalTo(12));
 		collector.checkThat(allMatches.get(RailwayQuery.SEMAPHORENEIGHBOR).get(0), Matchers.equalTo(0));
-		collector.checkThat(allMatches.get(RailwayQuery.SEMAPHORENEIGHBOR).get(1), Matchers.equalTo(2));
+		collector.checkThat(allMatches.get(RailwayQuery.SEMAPHORENEIGHBOR).get(1), Matchers.equalTo(15));
 		collector.checkThat(allMatches.get(RailwayQuery.SWITCHMONITORED  ).get(0), Matchers.equalTo(0));
 		collector.checkThat(allMatches.get(RailwayQuery.SWITCHMONITORED  ).get(1), Matchers.equalTo(10));
 		collector.checkThat(allMatches.get(RailwayQuery.SWITCHSET        ).get(0), Matchers.equalTo(1));

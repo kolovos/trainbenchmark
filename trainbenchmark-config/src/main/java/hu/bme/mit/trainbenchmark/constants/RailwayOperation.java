@@ -2,8 +2,11 @@ package hu.bme.mit.trainbenchmark.constants;
 
 public enum RailwayOperation {
 	// well-formedness constraint operations (query only)
+	ACTIVEROUTE("ActiveRoute"), //
 	CONNECTEDSEGMENTS("ConnectedSegments"), //
 	POSLENGTH("PosLength"), //
+	ROUTELENGTH("RouteLength"), //
+	ROUTEREACHABILITY("RouteReachability"), //
 	ROUTESENSOR("RouteSensor"), //
 	SEMAPHORENEIGHBOR("SemaphoreNeighbor"), //
 	SWITCHMONITORED("SwitchMonitored"), //
