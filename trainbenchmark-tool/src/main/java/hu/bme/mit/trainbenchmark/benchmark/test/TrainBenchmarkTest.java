@@ -306,8 +306,8 @@ public abstract class TrainBenchmarkTest {
 		final String modelFilename = "railway-inject-" + largeSize;
 		final String workload = "PosLengthInjectTest";
 		final List<RailwayOperation> operations = ImmutableList.of(//
-				RailwayOperation.POSLENGTH, //
-				RailwayOperation.POSLENGTH_INJECT //
+				RailwayOperation.POSLENGTH //
+				//RailwayOperation.POSLENGTH_INJECT //
 		);
 		final BenchmarkConfigBase bcb = bcbbTransformation.setModelFilename(modelFilename).setOperations(operations)
 				.setWorkload(workload).createConfigBase();
