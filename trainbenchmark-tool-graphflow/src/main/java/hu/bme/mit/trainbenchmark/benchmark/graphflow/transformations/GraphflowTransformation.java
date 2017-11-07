@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public abstract class GraphflowTransformation<TGraphflowMatch extends GraphflowMatch>
 		extends ModelTransformation<TGraphflowMatch, GraphflowDriver> {
@@ -19,9 +20,10 @@ public abstract class GraphflowTransformation<TGraphflowMatch extends GraphflowM
 								   final RailwayOperation operation) throws IOException {
 		super(driver);
 
-		this.transformationDefinition =
-			FileUtils.readFileToString(new File(workspaceDir + GraphflowConstants.CYPHER_DIR
-				+ "transformations/" + operation + "Rhs." + GraphflowConstants.QUERY_EXTENSION));
+		this.transformationDefinition = FileUtils.readFileToString(
+				new File(workspaceDir + GraphflowConstants.CYPHER_DIR
+					+ "transformations/" + operation + "Rhs." + GraphflowConstants.QUERY_EXTENSION),
+				StandardCharsets.UTF_8);
 	}
 
 }

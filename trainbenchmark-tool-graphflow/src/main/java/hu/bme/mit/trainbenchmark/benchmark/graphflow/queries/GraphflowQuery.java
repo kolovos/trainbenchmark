@@ -20,6 +20,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
 public class GraphflowQuery<TGraphflowMatch extends GraphflowMatch> extends ModelQuery<TGraphflowMatch, GraphflowDriver> {
@@ -33,7 +34,8 @@ public class GraphflowQuery<TGraphflowMatch extends GraphflowMatch> extends Mode
 
 		this.query = query;
 		this.queryDefinition = FileUtils.readFileToString(new File(
-				workspaceDir + GraphflowConstants.CYPHER_DIR + "queries/" + query + "." + GraphflowConstants.QUERY_EXTENSION));
+			workspaceDir + GraphflowConstants.CYPHER_DIR + "queries/" + query + "." + GraphflowConstants.QUERY_EXTENSION),
+				StandardCharsets.UTF_8);
 	}
 
 	@SuppressWarnings("unchecked")
