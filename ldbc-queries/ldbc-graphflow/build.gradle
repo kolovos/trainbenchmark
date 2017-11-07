@@ -1,0 +1,16 @@
+apply plugin: 'java'
+
+group = 'com.ldbc.snb'
+version = '0.0.1-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+dependencies {
+	compile group: 'com.ldbc.snb', name: 'common', version:'0.0.1-SNAPSHOT'
+	compile group: 'ca.waterloo.dsg', name: 'graphflow', version: '0.1.0'
+}
