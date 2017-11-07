@@ -14,15 +14,15 @@ package hu.bme.mit.trainbenchmark.benchmark.graphflow.driver;
 import ca.waterloo.dsg.graphflow.query.QueryProcessor;
 import ca.waterloo.dsg.graphflow.query.result.QueryResult;
 import ca.waterloo.dsg.graphflow.server.ServerQueryString;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import hu.bme.mit.trainbenchmark.benchmark.driver.Driver;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowMatch;
 import hu.bme.mit.trainbenchmark.constants.RailwayQuery;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class GraphflowDriver extends Driver {
@@ -43,29 +43,12 @@ public class GraphflowDriver extends Driver {
 	@Override
 	public void read(final String modelPath) {
 		final String POSTFIX = ".csv";
-		final Map<String, Collection<String>> vertexFiles = ImmutableMap.<String, Collection<String>>builder() //
-			.put("Region"        , Arrays.asList("Region")) //
-			.put("Route"         , Arrays.asList("Route")) //
-			.put("Segment"       , Arrays.asList("Segment", "TrackElement")) //
-			.put("Semaphore"     , Arrays.asList("Semaphore")) //
-			.put("Sensor"        , Arrays.asList("Sensor")) //
-			.put("Switch"        , Arrays.asList("Switch", "TrackElement")) //
-			.put("SwitchPosition", Arrays.asList("SwitchPosition")) //
-			.build();
 
-		final Map<String, String> edgeFiles = ImmutableMap.<String, String>builder() //
-			.put("connectsTo" , "connectsTo") //
-			.put("entry"      , "entry") //
-			.put("exit"       , "exit") //
-			.put("follows"    , "follows") //
-			.put("monitoredBy", "monitoredBy") //
-			.put("requires"   , "requires") //
-			.put("target"     , "target") //
-			.build();
+		final List<String> vertices = ImmutableList.of("Region", "Route", "Segment", "Semaphore", "Sensor", "Switch", "SwitchPosition");
+		final List<String> edges = ImmutableList.of("connectsTo", "entry", "exit", "follows", "monitoredBy", "requires", "target");
 
 		// TODO
 		// load vertices
-
 		// load edges
 	}
 
