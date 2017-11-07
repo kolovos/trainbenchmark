@@ -69,11 +69,11 @@ task individualBenchmark(dependsOn: 'classes', type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
 }
 
-generate.dependsOn(":trainbenchmark-generator-emf:shadowJar")
-generate.dependsOn(":trainbenchmark-generator-rdf:shadowJar")
+//generate.dependsOn(":trainbenchmark-generator-emf:shadowJar")
+//generate.dependsOn(":trainbenchmark-generator-rdf:shadowJar")
 generate.dependsOn(":trainbenchmark-generator-graph-neo4j:shadowJar")
 generate.dependsOn(":trainbenchmark-generator-graph-tinkerpop:shadowJar")
-generate.dependsOn(":trainbenchmark-generator-sql:shadowJar")
+//generate.dependsOn(":trainbenchmark-generator-sql:shadowJar")
 
 //benchmark.dependsOn(':trainbenchmark-tool-emfapi:shadowJar')
 benchmark.dependsOn(':trainbenchmark-tool-graphflow:shadowJar')
@@ -84,10 +84,11 @@ benchmark.dependsOn(':trainbenchmark-tool-neo4j:shadowJar')
 benchmark.dependsOn(':trainbenchmark-tool-tinkergraph:shadowJar')
 //benchmark.dependsOn(':trainbenchmark-tool-viatra:shadowJar')
 
-individualBenchmark.dependsOn(':trainbenchmark-tool-emfapi:shadowJar')
-individualBenchmark.dependsOn(':trainbenchmark-tool-jena:shadowJar')
-individualBenchmark.dependsOn(':trainbenchmark-tool-mysql:shadowJar')
-individualBenchmark.dependsOn(':trainbenchmark-tool-neo4j:shadowJar')
-individualBenchmark.dependsOn(':trainbenchmark-tool-sqlite:shadowJar')
-individualBenchmark.dependsOn(':trainbenchmark-tool-tinkergraph:shadowJar')
-individualBenchmark.dependsOn(':trainbenchmark-tool-viatra:shadowJar')
+//individualBenchmark.dependsOn(':trainbenchmark-tool-emfapi:shadowJar')
+individualBenchmark.dependsOn(':trainbenchmark-tool-graphflow:shadowJar')
+//individualBenchmark.dependsOn(':trainbenchmark-tool-jena:shadowJar')
+//individualBenchmark.dependsOn(':trainbenchmark-tool-mysql:shadowJar')
+//individualBenchmark.dependsOn(':trainbenchmark-tool-neo4j:shadowJar')
+//individualBenchmark.dependsOn(':trainbenchmark-tool-sqlite:shadowJar')
+//individualBenchmark.dependsOn(':trainbenchmark-tool-tinkergraph:shadowJar')
+//individualBenchmark.dependsOn(':trainbenchmark-tool-viatra:shadowJar')
