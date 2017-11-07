@@ -2,18 +2,12 @@ import hu.bme.mit.trainbenchmark.benchmark.config.BenchmarkConfigBaseBuilder
 import hu.bme.mit.trainbenchmark.benchmark.config.BenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.config.ModelSetConfig
 import hu.bme.mit.trainbenchmark.benchmark.config.TransformationChangeSetStrategy
-import hu.bme.mit.trainbenchmark.benchmark.emfapi.config.EmfApiBenchmarkConfigBuilder
-import hu.bme.mit.trainbenchmark.benchmark.jena.config.JenaBenchmarkConfigBuilder
-import hu.bme.mit.trainbenchmark.benchmark.mysql.config.MySqlBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.config.Neo4jBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.neo4j.config.Neo4jEngine
 import hu.bme.mit.trainbenchmark.benchmark.result.ResultHelper
 import hu.bme.mit.trainbenchmark.benchmark.runcomponents.BenchmarkReporter
 import hu.bme.mit.trainbenchmark.benchmark.runcomponents.BenchmarkRunner
-import hu.bme.mit.trainbenchmark.benchmark.sqlite.config.SQLiteBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.config.TinkerGraphBenchmarkConfigBuilder
-import hu.bme.mit.trainbenchmark.benchmark.viatra.config.ViatraBackend
-import hu.bme.mit.trainbenchmark.benchmark.viatra.config.ViatraBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.config.ExecutionConfig
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation
 import hu.bme.mit.trainbenchmark.neo4j.config.Neo4jGraphFormat
@@ -50,16 +44,17 @@ println()
 //reportUrl = "https://hooks.slack.com/services/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"
 
 def tools = [
-        new EmfApiBenchmarkConfigBuilder(),
-        new JenaBenchmarkConfigBuilder().setInferencing(false),
-        new JenaBenchmarkConfigBuilder().setInferencing(true),
-        new MySqlBenchmarkConfigBuilder(),
-        new Neo4jBenchmarkConfigBuilder().setEngine(Neo4jEngine.CORE_API).setGraphFormat(Neo4jGraphFormat.CSV    ),
-        new Neo4jBenchmarkConfigBuilder().setEngine(Neo4jEngine.CYPHER ).setGraphFormat(Neo4jGraphFormat.GRAPHML),
-        new SQLiteBenchmarkConfigBuilder(),
+//        new EmfApiBenchmarkConfigBuilder(),
+//        new JenaBenchmarkConfigBuilder().setInferencing(false),
+//        new JenaBenchmarkConfigBuilder().setInferencing(true),
+//        new MySqlBenchmarkConfigBuilder(),
+		new GraphflowBenchmarkConfigBuilder().setQueryExecutionStrategy(GraphflowQueryExecutionStrategy.ONE_TIME),
+		new Neo4jBenchmarkConfigBuilder().setEngine(Neo4jEngine.CORE_API).setGraphFormat(Neo4jGraphFormat.CSV),
+        new Neo4jBenchmarkConfigBuilder().setEngine(Neo4jEngine.CYPHER  ).setGraphFormat(Neo4jGraphFormat.GRAPHML),
+//        new SQLiteBenchmarkConfigBuilder(),
         new TinkerGraphBenchmarkConfigBuilder(),
-        new ViatraBenchmarkConfigBuilder().setBackend(ViatraBackend.INCREMENTAL),
-        new ViatraBenchmarkConfigBuilder().setBackend(ViatraBackend.LOCAL_SEARCH),
+//        new ViatraBenchmarkConfigBuilder().setBackend(ViatraBackend.INCREMENTAL),
+//        new ViatraBenchmarkConfigBuilder().setBackend(ViatraBackend.LOCAL_SEARCH),
 ]
 
 def workloads = [

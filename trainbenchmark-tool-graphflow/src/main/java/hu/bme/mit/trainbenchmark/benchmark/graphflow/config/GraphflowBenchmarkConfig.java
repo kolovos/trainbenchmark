@@ -17,8 +17,16 @@ import hu.bme.mit.trainbenchmark.benchmark.config.BenchmarkConfigBase;
 
 public class GraphflowBenchmarkConfig extends BenchmarkConfig {
 
-protected GraphflowBenchmarkConfig(final BenchmarkConfigBase configBase) {
+	protected final GraphflowQueryExecutionStrategy queryExecutionStrategy;
+
+	protected GraphflowBenchmarkConfig(final BenchmarkConfigBase configBase,
+									   final GraphflowQueryExecutionStrategy queryExecutionStrategy) {
 		super(configBase);
+		this.queryExecutionStrategy = queryExecutionStrategy;
+	}
+	
+	public GraphflowQueryExecutionStrategy getQueryExecutionStrategy() {
+		return queryExecutionStrategy;
 	}
 
 	@Override
