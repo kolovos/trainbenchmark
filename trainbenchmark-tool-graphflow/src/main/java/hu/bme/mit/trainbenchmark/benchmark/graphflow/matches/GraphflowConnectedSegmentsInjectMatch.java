@@ -11,7 +11,6 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.matches;
 
-import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
 import hu.bme.mit.trainbenchmark.benchmark.matches.ConnectedSegmentsInjectMatch;
 
 import java.util.Map;
@@ -27,18 +26,18 @@ public class GraphflowConnectedSegmentsInjectMatch extends GraphflowMatch implem
 	}
 
 	@Override
-	public Vertex getSensor() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SENSOR)];
+	public Integer getSensor() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SENSOR)];
 	}
 
 	@Override
-	public Vertex getSegment1() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT1)];
+	public Integer getSegment1() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SEGMENT1)];
 	}
 
 	@Override
-	public Vertex getSegment3() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT3)];
+	public Integer getSegment3() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SEGMENT3)];
 	}
 
 }

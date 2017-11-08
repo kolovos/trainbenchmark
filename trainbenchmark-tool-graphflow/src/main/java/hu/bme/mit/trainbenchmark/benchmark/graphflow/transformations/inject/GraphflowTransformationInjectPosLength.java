@@ -15,7 +15,6 @@ import com.google.common.collect.ImmutableMap;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.driver.GraphflowDriver;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowPosLengthInjectMatch;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.transformations.GraphflowTransformation;
-import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
 
@@ -33,7 +32,7 @@ public class GraphflowTransformationInjectPosLength extends GraphflowTransformat
 	public void activate(final Collection<GraphflowPosLengthInjectMatch> matches) throws IOException {
 		for (final GraphflowPosLengthInjectMatch match : matches) {
 			final Map<String, Object> parameters = ImmutableMap.of( //
-					QueryConstants.VAR_SEGMENT, match.getSegment().getProperty(ModelConstants.ID) //
+					QueryConstants.VAR_SEGMENT, match.getSegment() //
 			);
 			driver.runTransformation(transformationDefinition, parameters);
 		}

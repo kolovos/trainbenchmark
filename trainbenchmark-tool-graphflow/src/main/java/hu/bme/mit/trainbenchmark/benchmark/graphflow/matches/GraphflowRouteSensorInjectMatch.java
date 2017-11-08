@@ -11,7 +11,6 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.matches;
 
-import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
 import hu.bme.mit.trainbenchmark.benchmark.matches.RouteSensorInjectMatch;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 
@@ -24,13 +23,13 @@ public class GraphflowRouteSensorInjectMatch extends GraphflowMatch implements R
 	}
 
 	@Override
-	public Vertex getRoute() {
-		return (Vertex) tuple[columnNamesMapping.get(QueryConstants.VAR_ROUTE)];
+	public Integer getRoute() {
+		return (Integer) tuple[columnNamesMapping.get(QueryConstants.VAR_ROUTE)];
 	}
 
 	@Override
-	public Vertex getSensor() {
-		return (Vertex) tuple[columnNamesMapping.get(QueryConstants.VAR_SENSOR)];
+	public Integer getSensor() {
+		return (Integer) tuple[columnNamesMapping.get(QueryConstants.VAR_SENSOR)];
 	}
 
 }

@@ -15,7 +15,6 @@ import com.google.common.collect.ImmutableMap;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.driver.GraphflowDriver;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowSwitchMonitoredMatch;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.transformations.GraphflowTransformation;
-import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
 
@@ -33,7 +32,7 @@ public class GraphflowTransformationRepairSwitchMonitored extends GraphflowTrans
 	public void activate(final Collection<GraphflowSwitchMonitoredMatch> matches) throws IOException {
 		for (final GraphflowSwitchMonitoredMatch match : matches) {
 			final Map<String, Object> parameters = ImmutableMap.of( //
-					QueryConstants.VAR_SW, match.getSw().getProperty(ModelConstants.ID) //
+					QueryConstants.VAR_SW, match.getSw() //
 			);
 			driver.runTransformation(transformationDefinition, parameters);
 		}

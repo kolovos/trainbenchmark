@@ -11,7 +11,6 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.matches;
 
-import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
 import hu.bme.mit.trainbenchmark.benchmark.matches.SwitchSetMatch;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 
@@ -29,23 +28,23 @@ public class GraphflowSwitchSetMatch extends GraphflowMatch implements SwitchSet
 	}
 
 	@Override
-	public Vertex getSemaphore() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SEMAPHORE)];
+	public Integer getSemaphore() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SEMAPHORE)];
 	}
 
 	@Override
-	public Vertex getRoute() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_ROUTE)];
+	public Integer getRoute() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_ROUTE)];
 	}
 
 	@Override
-	public Vertex getSwP() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SWP)];
+	public Integer getSwP() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SWP)];
 	}
 
 	@Override
-	public Vertex getSw() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SW)];
+	public Integer getSw() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SW)];
 	}
 
 	public String getCurrentPosition() {

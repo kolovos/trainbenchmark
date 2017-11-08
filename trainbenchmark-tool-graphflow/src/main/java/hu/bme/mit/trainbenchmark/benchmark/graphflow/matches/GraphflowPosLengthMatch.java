@@ -11,7 +11,6 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.matches;
 
-import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
 import hu.bme.mit.trainbenchmark.benchmark.matches.PosLengthMatch;
 
 import java.util.Map;
@@ -25,8 +24,8 @@ public class GraphflowPosLengthMatch extends GraphflowMatch implements PosLength
 	}
 
 	@Override
-	public Vertex getSegment() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT)];
+	public Integer getSegment() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SEGMENT)];
 	}
 
 }

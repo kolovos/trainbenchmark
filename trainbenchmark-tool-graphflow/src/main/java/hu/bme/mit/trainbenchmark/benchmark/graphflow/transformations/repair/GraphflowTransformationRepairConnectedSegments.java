@@ -15,7 +15,6 @@ import com.google.common.collect.ImmutableMap;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.driver.GraphflowDriver;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowConnectedSegmentsMatch;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.transformations.GraphflowTransformation;
-import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
 
@@ -33,7 +32,7 @@ public class GraphflowTransformationRepairConnectedSegments extends GraphflowTra
 	public void activate(final Collection<GraphflowConnectedSegmentsMatch> matches) throws IOException {
 		for (final GraphflowConnectedSegmentsMatch match : matches) {
 			final Map<String, Object> parameters = ImmutableMap.of( //
-					QueryConstants.VAR_SEGMENT2, match.getSegment2().getProperty(ModelConstants.ID) //
+					QueryConstants.VAR_SEGMENT2, match.getSegment2() //
 			);
 			driver.runTransformation(transformationDefinition, parameters);
 		}

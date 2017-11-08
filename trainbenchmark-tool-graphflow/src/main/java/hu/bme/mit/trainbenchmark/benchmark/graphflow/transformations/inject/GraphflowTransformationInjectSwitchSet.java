@@ -15,7 +15,6 @@ import com.google.common.collect.ImmutableMap;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.driver.GraphflowDriver;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowSwitchSetInjectMatch;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.transformations.GraphflowTransformation;
-import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import hu.bme.mit.trainbenchmark.constants.Position;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
@@ -33,12 +32,12 @@ public class GraphflowTransformationInjectSwitchSet extends GraphflowTransformat
 	@Override
 	public void activate(final Collection<GraphflowSwitchSetInjectMatch> matches) throws IOException {
 		for (final GraphflowSwitchSetInjectMatch match : matches) {
-			final String currentPositionString = (String) match.getSw().getProperty(ModelConstants.CURRENTPOSITION);
+			final String currentPositionString = match.getCurrentPosition();
 			final Position currentPosition = Position.valueOf(currentPositionString);
 			final Position newCurrentPosition = Position.values()[(currentPosition.ordinal() + 1) % Position.values().length];
 
 			final Map<String, Object> parameters = ImmutableMap.of( //
-					QueryConstants.VAR_SW, match.getSw().getProperty(ModelConstants.ID), //
+					QueryConstants.VAR_SW, match.getSw(), //
 					QueryConstants.VAR_CURRENTPOSITION, newCurrentPosition.toString()
 			);
 			driver.runTransformation(transformationDefinition, parameters);

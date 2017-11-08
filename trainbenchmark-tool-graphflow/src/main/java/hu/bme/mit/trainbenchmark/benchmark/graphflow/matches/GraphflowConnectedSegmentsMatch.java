@@ -11,7 +11,6 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.matches;
 
-import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
 import hu.bme.mit.trainbenchmark.benchmark.matches.ConnectedSegmentsMatch;
 
 import java.util.Map;
@@ -31,38 +30,38 @@ public class GraphflowConnectedSegmentsMatch extends GraphflowMatch implements C
 	}
 
 	@Override
-	public Vertex getSensor() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SENSOR)];
+	public Integer getSensor() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SENSOR)];
 	}
 
 	@Override
-	public Vertex getSegment1() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT1)];
+	public Integer getSegment1() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SEGMENT1)];
 	}
 
 	@Override
-	public Vertex getSegment2() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT2)];
+	public Integer getSegment2() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SEGMENT2)];
 	}
 
 	@Override
-	public Vertex getSegment3() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT3)];
+	public Integer getSegment3() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SEGMENT3)];
 	}
 
 	@Override
-	public Vertex getSegment4() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT4)];
+	public Integer getSegment4() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SEGMENT4)];
 	}
 
 	@Override
-	public Vertex getSegment5() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT5)];
+	public Integer getSegment5() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SEGMENT5)];
 	}
 
 	@Override
-	public Vertex getSegment6() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT6)];
+	public Integer getSegment6() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SEGMENT6)];
 	}
 
 }

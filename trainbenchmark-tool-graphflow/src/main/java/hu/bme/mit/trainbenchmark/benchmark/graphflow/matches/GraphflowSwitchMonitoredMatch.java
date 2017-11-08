@@ -11,7 +11,6 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.matches;
 
-import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
 import hu.bme.mit.trainbenchmark.benchmark.matches.SwitchMonitoredMatch;
 
 import java.util.Map;
@@ -25,8 +24,8 @@ public class GraphflowSwitchMonitoredMatch extends GraphflowMatch implements Swi
 	}
 
 	@Override
-	public Vertex getSw() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SW)];
+	public Integer getSw() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SW)];
 	}
 
 }

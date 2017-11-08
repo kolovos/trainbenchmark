@@ -100,13 +100,14 @@ public class GraphflowDriver extends Driver {
 		for (final Object[] tuple : tuples.getTuples()) {
 			results.add(GraphflowMatch.createMatch(query, tuple, columnNamesMapping));
 		}
-		
+
 		return results;
 	}
 
 	public void runTransformation(final String transformationDefinition, final Map<String, Object> parameters)
 			throws IOException {
-		throw new UnsupportedOperationException("TODO: Implement transformations for Graphflow");
+//		throw new UnsupportedOperationException("TODO: Implement transformations for Graphflow");
+		// just NOP
 	}
 
 	public QueryResult runCypher(String cypher) {

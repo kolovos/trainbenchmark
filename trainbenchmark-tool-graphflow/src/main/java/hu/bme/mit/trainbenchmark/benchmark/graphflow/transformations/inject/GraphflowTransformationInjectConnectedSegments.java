@@ -15,7 +15,6 @@ import com.google.common.collect.ImmutableMap;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.driver.GraphflowDriver;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowConnectedSegmentsInjectMatch;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.transformations.GraphflowTransformation;
-import hu.bme.mit.trainbenchmark.constants.ModelConstants;
 import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation;
 import hu.bme.mit.trainbenchmark.constants.TrainBenchmarkConstants;
@@ -34,9 +33,9 @@ public class GraphflowTransformationInjectConnectedSegments extends GraphflowTra
 	public void activate(final Collection<GraphflowConnectedSegmentsInjectMatch> matches) throws IOException {
 		for (final GraphflowConnectedSegmentsInjectMatch match : matches) {
 			final Map<String, Object> parameters = ImmutableMap.of( //
-					QueryConstants.VAR_SENSOR, match.getSensor().getProperty(ModelConstants.ID), //
-					QueryConstants.VAR_SEGMENT1, match.getSegment1().getProperty(ModelConstants.ID), //
-					QueryConstants.VAR_SEGMENT3, match.getSegment3().getProperty(ModelConstants.ID), //
+					QueryConstants.VAR_SENSOR, match.getSensor(), //
+					QueryConstants.VAR_SEGMENT1, match.getSegment1(), //
+					QueryConstants.VAR_SEGMENT3, match.getSegment3(), //
 					QueryConstants.VAR_LENGTH, TrainBenchmarkConstants.DEFAULT_SEGMENT_LENGTH //
 			);
 			driver.runTransformation(transformationDefinition, parameters);

@@ -11,7 +11,6 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.matches;
 
-import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
 import hu.bme.mit.trainbenchmark.benchmark.matches.SemaphoreNeighborMatch;
 
 import java.util.Map;
@@ -31,38 +30,38 @@ public class GraphflowSemaphoreNeighborMatch extends GraphflowMatch implements S
 	}
 
 	@Override
-	public Vertex getSemaphore() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SEMAPHORE)];
+	public Integer getSemaphore() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SEMAPHORE)];
 	}
 
 	@Override
-	public Vertex getRoute1() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_ROUTE1)];
+	public Integer getRoute1() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_ROUTE1)];
 	}
 
 	@Override
-	public Vertex getRoute2() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_ROUTE2)];
+	public Integer getRoute2() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_ROUTE2)];
 	}
 
 	@Override
-	public Vertex getSensor1() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SENSOR1)];
+	public Integer getSensor1() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SENSOR1)];
 	}
 
 	@Override
-	public Vertex getSensor2() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SENSOR2)];
+	public Integer getSensor2() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SENSOR2)];
 	}
 
 	@Override
-	public Vertex getTe1() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_TE1)];
+	public Integer getTe1() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_TE1)];
 	}
 
 	@Override
-	public Vertex getTe2() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_TE2)];
+	public Integer getTe2() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_TE2)];
 	}
 
 }

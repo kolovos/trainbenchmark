@@ -11,8 +11,8 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.matches;
 
-import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
 import hu.bme.mit.trainbenchmark.benchmark.matches.SwitchSetInjectMatch;
+import hu.bme.mit.trainbenchmark.constants.QueryConstants;
 
 import java.util.Map;
 
@@ -25,8 +25,12 @@ public class GraphflowSwitchSetInjectMatch extends GraphflowMatch implements Swi
 	}
 
 	@Override
-	public Vertex getSw() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SW)];
+	public Integer getSw() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SW)];
+	}
+
+	public String getCurrentPosition() {
+		return (String) tuple[columnNamesMapping.get(QueryConstants.VAR_CURRENTPOSITION)];
 	}
 
 }

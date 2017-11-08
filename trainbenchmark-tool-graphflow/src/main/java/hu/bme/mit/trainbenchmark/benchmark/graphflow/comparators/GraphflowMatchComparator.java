@@ -11,11 +11,10 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.comparators;
 
-import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
 import hu.bme.mit.trainbenchmark.benchmark.graphflow.matches.GraphflowMatch;
 import hu.bme.mit.trainbenchmark.benchmark.matches.comparators.BaseMatchComparator;
 
-public class GraphflowMatchComparator extends BaseMatchComparator<GraphflowMatch, Vertex> {
+public class GraphflowMatchComparator extends BaseMatchComparator<GraphflowMatch, Integer> {
 
 	public GraphflowMatchComparator() {
 		super(new VertexComparator());

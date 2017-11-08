@@ -11,17 +11,13 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.comparators;
 
-import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
-
 import java.util.Comparator;
 
-public class VertexComparator implements Comparator<Vertex> {
+public class VertexComparator implements Comparator<Integer> {
 
 	@Override
-	public int compare(final Vertex vertex1, final Vertex vertex2) {
-		final long id1 = vertex1.getId();
-		final long id2 = vertex2.getId();
-		return Long.compare(id1, id2);
+	public int compare(final Integer vertex1, final Integer vertex2) {
+		return Integer.compare(vertex1, vertex2);
 	}
 
 }

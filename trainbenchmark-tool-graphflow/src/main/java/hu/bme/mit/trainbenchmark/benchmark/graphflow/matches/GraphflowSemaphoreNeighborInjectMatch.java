@@ -11,7 +11,6 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.matches;
 
-import ca.waterloo.dsg.graphflow.query.result.subgraph.Vertex;
 import hu.bme.mit.trainbenchmark.benchmark.matches.SemaphoreNeighborInjectMatch;
 
 import java.util.Map;
@@ -26,13 +25,13 @@ public class GraphflowSemaphoreNeighborInjectMatch extends GraphflowMatch implem
 	}
 
 	@Override
-	public Vertex getRoute() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_ROUTE)];
+	public Integer getRoute() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_ROUTE)];
 	}
 
 	@Override
-	public Vertex getSemaphore() {
-		return (Vertex) tuple[columnNamesMapping.get(VAR_SEMAPHORE)];
+	public Integer getSemaphore() {
+		return (Integer) tuple[columnNamesMapping.get(VAR_SEMAPHORE)];
 	}
 
 }
