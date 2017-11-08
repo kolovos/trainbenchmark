@@ -27,8 +27,11 @@ import java.util.Map;
 
 public class GraphflowDriver extends Driver {
 
-	public GraphflowDriver() throws IOException {
+	protected final String modelDir;
+
+	public GraphflowDriver(final String modelDir) throws IOException {
 		super();
+		this.modelDir = modelDir;
 	}
 
 	@Override
@@ -42,18 +45,29 @@ public class GraphflowDriver extends Driver {
 
 	@Override
 	public void read(final String modelPath) {
-		final List<String> vertices = ImmutableList.of("Region", "Route", "Segment", "Semaphore", "Sensor", "Switch", "SwitchPosition");
-		final List<String> edges = ImmutableList.of("connectsTo", "entry", "exit", "follows", "monitoredBy", "requires", "target");
+		final List<String> vertexLabels = ImmutableList.of(
+			"Region", "Route", "Segment", "Semaphore", "Sensor", "Switch", "SwitchPosition"
+		);
+		final List<String> edgeTypes = ImmutableList.of(
+			"connectsTo", "entry", "exit", "follows", "monitoredBy", "requires", "target"
+		);
+
+		final String fileFormat = modelDir + "/railway-inject-%d-%s.csv";
+		final String loadVerticesFormat = "load vertices with label '%s' from csv '%s' separator ',';";
+		final String loadEdgesFormat    = "load edges    with type  '%s' from csv '%s' separator ',';";
 
 		final int size = 1;
-		final String format = "railway-inject-%d-%s.csv";
 
 		// TODO
-		for (final String vertex : vertices) {
-			final String filename = String.format(format, size, vertex);
+		for (final String vertexLabel : vertexLabels) {
+			final String filename = String.format(fileFormat, size, vertexLabel);
+			final String loadCommand = String.format(loadVerticesFormat, vertexLabel, filename);
+			System.out.println(loadCommand);
 		}
-		for (final String edge: edges) {
-			final String filename = String.format(format, size, edge);
+		for (final String edgeType: edgeTypes) {
+			final String filename = String.format(fileFormat, size, edgeType);
+			final String loadCommand = String.format(loadEdgesFormat, edgeType, filename);
+			System.out.println(loadCommand);
 		}
 	}
 
