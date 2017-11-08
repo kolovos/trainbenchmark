@@ -42,14 +42,19 @@ public class GraphflowDriver extends Driver {
 
 	@Override
 	public void read(final String modelPath) {
-		final String POSTFIX = ".csv";
-
 		final List<String> vertices = ImmutableList.of("Region", "Route", "Segment", "Semaphore", "Sensor", "Switch", "SwitchPosition");
 		final List<String> edges = ImmutableList.of("connectsTo", "entry", "exit", "follows", "monitoredBy", "requires", "target");
 
+		final int size = 1;
+		final String format = "railway-inject-%d-%s.csv";
+
 		// TODO
-		// load vertices
-		// load edges
+		for (final String vertex : vertices) {
+			final String filename = String.format(format, size, vertex);
+		}
+		for (final String edge: edges) {
+			final String filename = String.format(format, size, edge);
+		}
 	}
 
 	@Override
