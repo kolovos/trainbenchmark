@@ -1,5 +1,8 @@
-MATCH (semaphore:Semaphore)<-[:entry]-(route:Route)-[:follows]->(swP:SwitchPosition)-[:target]->(sw:Switch)
+MATCH
+  (route:Route)-[:entry]->(semaphore:Semaphore),
+  (route)-[:follows]->(swP:SwitchPosition),
+  (swP)-[:target]->(sw:Switch)
 WHERE semaphore.signal = "GO"
   AND route.active = true
   AND sw.currentPosition <> swP.position
-RETURN semaphore, route, swP, sw, sw.currentPosition AS currentPosition, swP.position AS position
+RETURN semaphore, route, swP, sw, sw.currentPosition, swP.position

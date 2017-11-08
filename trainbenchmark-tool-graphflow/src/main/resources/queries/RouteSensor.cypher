@@ -1,3 +1,6 @@
-MATCH (route:Route)-[:follows]->(swP:SwitchPosition)-[:target]->(sw:Switch)-[:monitoredBy]->(sensor:Sensor)
-WHERE NOT (route)-[:requires]->(sensor)
+MATCH
+    (route:Route)-[:follows]->(swP:SwitchPosition),
+    (swP)-[:target]->(sw:Switch),
+    (sw)-[:monitoredBy]->(sensor:Sensor)
+WHERE NOT EXISTS((route)-[:requires]->(sensor))
 RETURN route, sensor, swP, sw
