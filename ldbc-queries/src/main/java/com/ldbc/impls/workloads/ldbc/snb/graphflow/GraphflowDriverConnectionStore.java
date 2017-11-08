@@ -1,10 +1,14 @@
 package com.ldbc.impls.workloads.ldbc.snb.graphflow;
 
+import ca.waterloo.dsg.graphflow.query.QueryProcessor;
 import com.ldbc.driver.DbConnectionState;
 
+import java.io.IOException;
 import java.util.Map;
 
 public abstract class GraphflowDriverConnectionStore<DbQueryStore> extends DbConnectionState {
+
+	protected final QueryProcessor queryProcessor = new QueryProcessor();
 	private DbQueryStore queryStore;
 	private boolean printNames;
 	private boolean printStrings;
@@ -36,4 +40,11 @@ public abstract class GraphflowDriverConnectionStore<DbQueryStore> extends DbCon
 		}
 	}
 
+	@Override
+	public void close() throws IOException {
+	}
+
+	public QueryProcessor getQueryProcessor() {
+		return queryProcessor;
+	}
 }

@@ -7,16 +7,8 @@ import java.util.Map;
 
 public class GraphflowPoolingDbConnectionStore extends GraphflowDriverConnectionStore {
 
-	//protected final QueryProcessor queryProcessor;
-
 	public GraphflowPoolingDbConnectionStore(Map<String, String> properties, GraphflowBiQueryStore store) {
 		super(properties, store);
-
-		//queryProcessor =
 	}
 
-	@Override
-	public void close() throws IOException {
-
-	}
 }

@@ -1,5 +1,6 @@
 package com.ldbc.impls.workloads.ldbc.snb.graphflow.bi;
 
+import ca.waterloo.dsg.graphflow.query.QueryProcessor;
 import com.ldbc.driver.DbException;
 import com.ldbc.driver.control.LoggingService;
 import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery11UnrelatedReplies;
@@ -27,6 +28,8 @@ public class GraphflowBiDb extends GraphflowDb {
 	@Override
 	protected void onInit(Map<String, String> properties, LoggingService loggingService) throws DbException {
 		dbs = new GraphflowPoolingDbConnectionStore(properties, new GraphflowBiQueryStore(properties.get("queryDir")));
+
+		processor = dbs.getQueryProcessor();
 
 //		registerOperationHandler(LdbcSnbBiQuery1PostingSummary.class, BiQuery1.class);
 //		registerOperationHandler(LdbcSnbBiQuery2TopTags.class, BiQuery2.class);
