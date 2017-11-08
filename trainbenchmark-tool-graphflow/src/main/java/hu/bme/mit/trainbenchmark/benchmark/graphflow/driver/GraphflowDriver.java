@@ -22,9 +22,12 @@ import hu.bme.mit.trainbenchmark.constants.RailwayQuery;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class GraphflowDriver extends Driver {
 
@@ -88,14 +91,16 @@ public class GraphflowDriver extends Driver {
 		// the Train Benchmark queries always return with a Tuples object
 		final Tuples tuples = (Tuples) runCypher(queryDefinition);
 
-		// TODO: convert these to
-//		tuples.getColumnNames();
+		final String[] columnNames = tuples.getColumnNames();
+		final List<String> columnNamesList = Arrays.asList(columnNames);
+		final Map<String, Integer> columnNamesMapping = IntStream.range(0, columnNamesList.size())
+			.boxed()
+			.collect(Collectors.toMap(columnNamesList::get, i -> i));
 
-		System.out.println(tuples.getTuples().get(0));
-//		for (Object[] tuple: tuples.getTuples()) {
-//			System.out.println(tuple);
-//		}
-
+		for (final Object[] tuple : tuples.getTuples()) {
+			results.add(GraphflowMatch.createMatch(query, tuple, columnNamesMapping));
+		}
+		
 		return results;
 	}
 
