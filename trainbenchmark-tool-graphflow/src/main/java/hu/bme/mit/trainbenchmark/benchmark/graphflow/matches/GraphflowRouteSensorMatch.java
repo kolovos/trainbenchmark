@@ -19,28 +19,28 @@ import java.util.Map;
 
 public class GraphflowRouteSensorMatch extends GraphflowMatch implements RouteSensorMatch {
 
-	public GraphflowRouteSensorMatch(final Map<String, Object> match) {
-		super(match);
+	public GraphflowRouteSensorMatch(final Object[] tuple, final Map<String, Integer> columnNamesMapping) {
+		super(tuple, columnNamesMapping);
 	}
 
 	@Override
 	public Vertex getRoute() {
-		return (Vertex) match.get(QueryConstants.VAR_ROUTE);
+		return (Vertex) tuple[columnNamesMapping.get(QueryConstants.VAR_ROUTE)];
 	}
 
 	@Override
 	public Vertex getSensor() {
-		return (Vertex) match.get(QueryConstants.VAR_SENSOR);
+		return (Vertex) tuple[columnNamesMapping.get(QueryConstants.VAR_SENSOR)];
 	}
 
 	@Override
 	public Vertex getSwP() {
-		return (Vertex) match.get(QueryConstants.VAR_SWP);
+		return (Vertex) tuple[columnNamesMapping.get(QueryConstants.VAR_SWP)];
 	}
 
 	@Override
 	public Vertex getSw() {
-		return (Vertex) match.get(QueryConstants.VAR_SW);
+		return (Vertex) tuple[columnNamesMapping.get(QueryConstants.VAR_SW)];
 	}
 
 }

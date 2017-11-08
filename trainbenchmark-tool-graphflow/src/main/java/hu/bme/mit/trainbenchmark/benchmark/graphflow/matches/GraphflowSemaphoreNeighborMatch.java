@@ -26,43 +26,43 @@ import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_TE2;
 
 public class GraphflowSemaphoreNeighborMatch extends GraphflowMatch implements SemaphoreNeighborMatch {
 
-	public GraphflowSemaphoreNeighborMatch(final Map<String, Object> match) {
-		super(match);
+	public GraphflowSemaphoreNeighborMatch(final Object[] tuple, final Map<String, Integer> columnNamesMapping) {
+		super(tuple, columnNamesMapping);
 	}
 
 	@Override
 	public Vertex getSemaphore() {
-		return (Vertex) match.get(VAR_SEMAPHORE);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SEMAPHORE)];
 	}
 
 	@Override
 	public Vertex getRoute1() {
-		return (Vertex) match.get(VAR_ROUTE1);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_ROUTE1)];
 	}
 
 	@Override
 	public Vertex getRoute2() {
-		return (Vertex) match.get(VAR_ROUTE2);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_ROUTE2)];
 	}
 
 	@Override
 	public Vertex getSensor1() {
-		return (Vertex) match.get(VAR_SENSOR1);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SENSOR1)];
 	}
 
 	@Override
 	public Vertex getSensor2() {
-		return (Vertex) match.get(VAR_SENSOR2);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SENSOR2)];
 	}
 
 	@Override
 	public Vertex getTe1() {
-		return (Vertex) match.get(VAR_TE1);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_TE1)];
 	}
 
 	@Override
 	public Vertex getTe2() {
-		return (Vertex) match.get(VAR_TE2);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_TE2)];
 	}
 
 }

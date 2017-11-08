@@ -20,13 +20,13 @@ import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SW;
 
 public class GraphflowSwitchMonitoredMatch extends GraphflowMatch implements SwitchMonitoredMatch {
 
-	public GraphflowSwitchMonitoredMatch(final Map<String, Object> match) {
-		super(match);
+	public GraphflowSwitchMonitoredMatch(final Object[] tuple, final Map<String, Integer> columnNamesMapping) {
+		super(tuple, columnNamesMapping);
 	}
 
 	@Override
 	public Vertex getSw() {
-		return (Vertex) match.get(VAR_SW);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SW)];
 	}
 
 }

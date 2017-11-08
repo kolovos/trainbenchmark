@@ -16,8 +16,8 @@ WHERE NOT (reply)-[:hasTag]->(tag)
 RETURN
   person.id,
   tag.name,
-  count(fan) AS countLikes,
-  count(reply) AS countReplies,
+  count(fan),
+  count(reply),
   reply.content
 //ORDER BY
 //  countLikes DESC,

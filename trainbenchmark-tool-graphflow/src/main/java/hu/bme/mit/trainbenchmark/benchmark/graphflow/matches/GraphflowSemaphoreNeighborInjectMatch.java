@@ -21,18 +21,18 @@ import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SEMAPHORE;
 
 public class GraphflowSemaphoreNeighborInjectMatch extends GraphflowMatch implements SemaphoreNeighborInjectMatch {
 
-	public GraphflowSemaphoreNeighborInjectMatch(final Map<String, Object> match) {
-		super(match);
+	public GraphflowSemaphoreNeighborInjectMatch(final Object[] tuple, final Map<String, Integer> columnNamesMapping) {
+		super(tuple, columnNamesMapping);
 	}
 
 	@Override
 	public Vertex getRoute() {
-		return (Vertex) match.get(VAR_ROUTE);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_ROUTE)];
 	}
 
 	@Override
 	public Vertex getSemaphore() {
-		return (Vertex) match.get(VAR_SEMAPHORE);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SEMAPHORE)];
 	}
 
 }

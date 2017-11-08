@@ -26,43 +26,43 @@ import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SENSOR;
 
 public class GraphflowConnectedSegmentsMatch extends GraphflowMatch implements ConnectedSegmentsMatch {
 
-	public GraphflowConnectedSegmentsMatch(final Map<String, Object> match) {
-		super(match);
+	public GraphflowConnectedSegmentsMatch(final Object[] tuple, final Map<String, Integer> columnNamesMapping) {
+		super(tuple, columnNamesMapping);
 	}
 
 	@Override
 	public Vertex getSensor() {
-		return (Vertex) match.get(VAR_SENSOR);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SENSOR)];
 	}
 
 	@Override
 	public Vertex getSegment1() {
-		return (Vertex) match.get(VAR_SEGMENT1);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT1)];
 	}
 
 	@Override
 	public Vertex getSegment2() {
-		return (Vertex) match.get(VAR_SEGMENT2);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT2)];
 	}
 
 	@Override
 	public Vertex getSegment3() {
-		return (Vertex) match.get(VAR_SEGMENT3);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT3)];
 	}
 
 	@Override
 	public Vertex getSegment4() {
-		return (Vertex) match.get(VAR_SEGMENT4);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT4)];
 	}
 
 	@Override
 	public Vertex getSegment5() {
-		return (Vertex) match.get(VAR_SEGMENT5);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT5)];
 	}
 
 	@Override
 	public Vertex getSegment6() {
-		return (Vertex) match.get(VAR_SEGMENT6);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT6)];
 	}
 
 }

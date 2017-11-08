@@ -20,13 +20,13 @@ import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SW;
 
 public class GraphflowSwitchSetInjectMatch extends GraphflowMatch implements SwitchSetInjectMatch {
 
-	public GraphflowSwitchSetInjectMatch(final Map<String, Object> match) {
-		super(match);
+	public GraphflowSwitchSetInjectMatch(final Object[] tuple, final Map<String, Integer> columnNamesMapping) {
+		super(tuple, columnNamesMapping);
 	}
 
 	@Override
 	public Vertex getSw() {
-		return (Vertex) match.get(VAR_SW);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SW)];
 	}
 
 }

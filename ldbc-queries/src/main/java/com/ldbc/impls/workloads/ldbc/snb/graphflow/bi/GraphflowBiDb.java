@@ -2,14 +2,23 @@ package com.ldbc.impls.workloads.ldbc.snb.graphflow.bi;
 
 import com.ldbc.driver.DbException;
 import com.ldbc.driver.control.LoggingService;
+import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery11UnrelatedReplies;
+import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery11UnrelatedRepliesResult;
+import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery12TrendingPosts;
+import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery12TrendingPostsResult;
+import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery17FriendshipTriangles;
+import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery17FriendshipTrianglesResult;
 import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery4PopularCountryTopics;
 import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery4PopularCountryTopicsResult;
 import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery7AuthoritativeUsers;
 import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery7AuthoritativeUsersResult;
+import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery9RelatedForums;
+import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery9RelatedForumsResult;
 import com.ldbc.impls.workloads.ldbc.snb.graphflow.GraphflowDb;
 import com.ldbc.impls.workloads.ldbc.snb.graphflow.GraphflowDriverConnectionStore;
 import com.ldbc.impls.workloads.ldbc.snb.graphflow.GraphflowListOperationHandler;
 import com.ldbc.impls.workloads.ldbc.snb.graphflow.GraphflowPoolingDbConnectionStore;
+import com.ldbc.impls.workloads.ldbc.snb.graphflow.GraphflowSingletonOperationHandler;
 
 import java.util.Map;
 
@@ -76,7 +85,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery2TopTagsResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery2TopTagsResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			String country = (String) tuple[0];
 //			int month = (int) tuple[1];
 //			String gender = (String) tuple[2];
@@ -96,7 +105,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery3TagEvolutionResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery3TagEvolutionResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			String tagName = (String) tuple[0];
 //			int countA = (int) tuple[1];
 //			int countB = (int) tuple[2];
@@ -115,11 +124,11 @@ public class GraphflowBiDb extends GraphflowDb {
 
 		@Override
 		public LdbcSnbBiQuery4PopularCountryTopicsResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
-			long forumId = (long) tuple[0];
-			String title = (String) tuple[1];
+			long forumId = (long) tuple[columnNamesMap.get("forumId")];
+			String title = (String) tuple[columnNamesMap.get("title")];
 			long creationDate = 0L; // TODO get year, month and day instead of 'new Converter().convertTimestampToEpoch((String) tuple[2]);'
-			long moderator = (long) tuple[3];
-			int count = (int) tuple[4];
+			long moderator = (long) tuple[columnNamesMap.get("moderator")];
+			int count = (int) tuple[columnNamesMap.get("count")];
 			return new LdbcSnbBiQuery4PopularCountryTopicsResult(forumId, title, creationDate, moderator, count);
 		}
 	}
@@ -151,7 +160,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery6ActivePostersResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery6ActivePostersResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			long personId = (long) tuple[0];
 //			int postCount = (int) tuple[1];
 //			int replyCount = (int) tuple[2];
@@ -171,8 +180,8 @@ public class GraphflowBiDb extends GraphflowDb {
 
 		@Override
 		public LdbcSnbBiQuery7AuthoritativeUsersResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
-			long personId = (long) tuple[0];
-			int score = (int) tuple[1];
+			long personId = (long) tuple[columnNamesMap.get("personId")];
+			int score = (int) tuple[columnNamesMap.get("score")];
 			return new LdbcSnbBiQuery7AuthoritativeUsersResult(personId, score);
 		}
 
@@ -186,31 +195,31 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery8RelatedTopicsResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery8RelatedTopicsResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			String tag = (String) tuple[0];
 //			int count = (int) tuple[1];
 //			return new LdbcSnbBiQuery8RelatedTopicsResult(tag, count);
 //		}
 //
 //	}
-//
-//	public static class BiQuery9 extends GraphflowListOperationHandler<LdbcSnbBiQuery9RelatedForums, LdbcSnbBiQuery9RelatedForumsResult, GraphflowBiQueryStore> {
-//
-//		@Override
-//		public String getQueryString(GraphflowDriverConnectionStore<GraphflowBiQueryStore> state, LdbcSnbBiQuery9RelatedForums operation) {
-//			return state.getQueryStore().getQuery9(operation);
-//		}
-//
-//		@Override
-//		public LdbcSnbBiQuery9RelatedForumsResult convertSingleResult(Object[] tuple) {
-//			long forumId = (long) tuple[0];
-//			int sumA = (int) tuple[1];
-//			int sumB = (int) tuple[2];
-//			return new LdbcSnbBiQuery9RelatedForumsResult(forumId, sumA, sumB);
-//		}
-//
-//	}
-//
+
+	public static class BiQuery9 extends GraphflowListOperationHandler<LdbcSnbBiQuery9RelatedForums, LdbcSnbBiQuery9RelatedForumsResult, GraphflowBiQueryStore> {
+
+		@Override
+		public String getQueryString(GraphflowDriverConnectionStore<GraphflowBiQueryStore> state, LdbcSnbBiQuery9RelatedForums operation) {
+			return state.getQueryStore().getQuery9(operation);
+		}
+
+		@Override
+		public LdbcSnbBiQuery9RelatedForumsResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
+			long forumId = (long) tuple[columnNamesMap.get("forumId")];
+			int sumA = (int) tuple[columnNamesMap.get("sumA")];
+			int sumB = (int) tuple[columnNamesMap.get("sumB")];
+			return new LdbcSnbBiQuery9RelatedForumsResult(forumId, sumA, sumB);
+		}
+
+	}
+
 //	public static class BiQuery10 extends GraphflowListOperationHandler<LdbcSnbBiQuery10TagPerson, LdbcSnbBiQuery10TagPersonResult, GraphflowBiQueryStore> {
 //
 //		@Override
@@ -219,7 +228,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery10TagPersonResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery10TagPersonResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			long personId = (long) tuple[0];
 //			int score = (int) tuple[1];
 //			int friendsScore = (int) tuple[2];
@@ -227,43 +236,45 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //	}
-//
-//	public static class BiQuery11 extends GraphflowListOperationHandler<LdbcSnbBiQuery11UnrelatedReplies, LdbcSnbBiQuery11UnrelatedRepliesResult, GraphflowBiQueryStore> {
-//
-//		@Override
-//		public String getQueryString(GraphflowDriverConnectionStore<GraphflowBiQueryStore> state, LdbcSnbBiQuery11UnrelatedReplies operation) {
-//			return state.getQueryStore().getQuery11(operation);
-//		}
-//
-//		@Override
-//		public LdbcSnbBiQuery11UnrelatedRepliesResult convertSingleResult(Object[] tuple) {
-//			long personId = (long) tuple[0];
-//			String tagName = (String) tuple[1];
-//			int countLikes = (int) tuple[2];
-//			int countReplies = (int) tuple[3];
-//			return new LdbcSnbBiQuery11UnrelatedRepliesResult(personId, tagName, countLikes, countReplies);
-//		}
-//
-//	}
-//
-//	public static class BiQuery12 extends GraphflowListOperationHandler<LdbcSnbBiQuery12TrendingPosts, LdbcSnbBiQuery12TrendingPostsResult, GraphflowBiQueryStore> {
-//
-//		@Override
-//		public String getQueryString(GraphflowDriverConnectionStore<GraphflowBiQueryStore> state, LdbcSnbBiQuery12TrendingPosts operation) {
-//			return state.getQueryStore().getQuery12(operation);
-//		}
-//
-//		@Override
-//		public LdbcSnbBiQuery12TrendingPostsResult convertSingleResult(Object[] tuple) throws ParseException {
-//			long personId = (long) tuple[0];
-//			String firstName = (String) tuple[1];
-//			String lastName = (String) tuple[2];
+
+	public static class BiQuery11 extends GraphflowListOperationHandler<LdbcSnbBiQuery11UnrelatedReplies, LdbcSnbBiQuery11UnrelatedRepliesResult, GraphflowBiQueryStore> {
+
+		@Override
+		public String getQueryString(GraphflowDriverConnectionStore<GraphflowBiQueryStore> state, LdbcSnbBiQuery11UnrelatedReplies operation) {
+			return state.getQueryStore().getQuery11(operation);
+		}
+
+		@Override
+		public LdbcSnbBiQuery11UnrelatedRepliesResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
+			long personId = (long) tuple[columnNamesMap.get("personId")];
+			String tagName = (String) tuple[columnNamesMap.get("tagName")];
+			int countLikes = (int) tuple[columnNamesMap.get("count(fan)")];
+			int countReplies = (int) tuple[columnNamesMap.get("count(reply)")];
+			return new LdbcSnbBiQuery11UnrelatedRepliesResult(personId, tagName, countLikes, countReplies);
+		}
+
+	}
+
+	public static class BiQuery12 extends GraphflowListOperationHandler<LdbcSnbBiQuery12TrendingPosts, LdbcSnbBiQuery12TrendingPostsResult, GraphflowBiQueryStore> {
+
+		@Override
+		public String getQueryString(GraphflowDriverConnectionStore<GraphflowBiQueryStore> state, LdbcSnbBiQuery12TrendingPosts operation) {
+			return state.getQueryStore().getQuery12(operation);
+		}
+
+		@Override
+		public LdbcSnbBiQuery12TrendingPostsResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
+			long personId = (long) tuple[columnNamesMap.get("personId")];
+			String firstName = (String) tuple[columnNamesMap.get("firstName")];
+			String lastName = (String) tuple[columnNamesMap.get("lastName")];
+			// TODO reconstruct the date from the results
+
 //			long creationDate = new Converter().convertTimestampToEpoch((String) tuple[3]);
-//			int likeCount = (int) tuple[4];
-//			return new LdbcSnbBiQuery12TrendingPostsResult(personId, firstName, lastName, creationDate, likeCount);
-//		}
-//	}
-//
+			int likeCount = (int) tuple[columnNamesMap.get("likeCount")];
+			return new LdbcSnbBiQuery12TrendingPostsResult(personId, firstName, lastName, 0L, likeCount);
+		}
+	}
+
 //	public static class BiQuery13 extends GraphflowListOperationHandler<LdbcSnbBiQuery13PopularMonthlyTags, LdbcSnbBiQuery13PopularMonthlyTagsResult, GraphflowBiQueryStore> {
 //
 //		@Override
@@ -272,7 +283,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery13PopularMonthlyTagsResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery13PopularMonthlyTagsResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			int year = (int) tuple[0];
 //			int month = (int) tuple[1];
 //			final List<List<Object>> tagPopularitiesRaw = record.get(2).asList(Values.ofList());
@@ -296,7 +307,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery14TopThreadInitiatorsResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery14TopThreadInitiatorsResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			long personId = (long) tuple[0];
 //			String firstName = (String) tuple[1];
 //			String lastName = (String) tuple[2];
@@ -314,7 +325,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery15SocialNormalsResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery15SocialNormalsResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			long personId = (long) tuple[0];
 //			int count = (int) tuple[1];
 //			return new LdbcSnbBiQuery15SocialNormalsResult(personId, count);
@@ -329,28 +340,28 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery16ExpertsInSocialCircleResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery16ExpertsInSocialCircleResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			long personId = (long) tuple[0];
 //			String tag = (String) tuple[1];
 //			int count = (int) tuple[2];
 //			return new LdbcSnbBiQuery16ExpertsInSocialCircleResult(personId, tag, count);
 //		}
 //	}
-//
-//	public static class BiQuery17 extends GraphflowSingletonOperationHandler<LdbcSnbBiQuery17FriendshipTriangles, LdbcSnbBiQuery17FriendshipTrianglesResult, GraphflowBiQueryStore> {
-//
-//		@Override
-//		public String getQueryString(GraphflowDriverConnectionStore<GraphflowBiQueryStore> state, LdbcSnbBiQuery17FriendshipTriangles operation) {
-//			return state.getQueryStore().getQuery17(operation);
-//		}
-//
-//		@Override
-//		public LdbcSnbBiQuery17FriendshipTrianglesResult convertSingleResult(Object[] tuple) {
-//			int count = (int) tuple[0];
-//			return new LdbcSnbBiQuery17FriendshipTrianglesResult(count);
-//		}
-//	}
-//
+
+	public static class BiQuery17 extends GraphflowSingletonOperationHandler<LdbcSnbBiQuery17FriendshipTriangles, LdbcSnbBiQuery17FriendshipTrianglesResult, GraphflowBiQueryStore> {
+
+		@Override
+		public String getQueryString(GraphflowDriverConnectionStore<GraphflowBiQueryStore> state, LdbcSnbBiQuery17FriendshipTriangles operation) {
+			return state.getQueryStore().getQuery17(operation);
+		}
+
+		@Override
+		public LdbcSnbBiQuery17FriendshipTrianglesResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
+			int count = (int) tuple[columnNamesMap.get("count")];
+			return new LdbcSnbBiQuery17FriendshipTrianglesResult(count);
+		}
+	}
+
 //	public static class BiQuery18 extends GraphflowListOperationHandler<LdbcSnbBiQuery18PersonPostCounts, LdbcSnbBiQuery18PersonPostCountsResult, GraphflowBiQueryStore> {
 //
 //		@Override
@@ -359,7 +370,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery18PersonPostCountsResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery18PersonPostCountsResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			int postCount = (int) tuple[0];
 //			int count = (int) tuple[1];
 //			return new LdbcSnbBiQuery18PersonPostCountsResult(postCount, count);
@@ -375,7 +386,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery19StrangerInteractionResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery19StrangerInteractionResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			long personId = (long) tuple[0];
 //			int strangerCount = (int) tuple[1];
 //			int count = (int) tuple[2];
@@ -391,7 +402,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery20HighLevelTopicsResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery20HighLevelTopicsResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			String tagClass = (String) tuple[0];
 //			int count = (int) tuple[1];
 //			return new LdbcSnbBiQuery20HighLevelTopicsResult(tagClass, count);
@@ -406,7 +417,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery21ZombiesResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery21ZombiesResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			long personId = (long) tuple[0];
 //			int zombieCount = (int) tuple[1];
 //			int realCount = (int) tuple[2];
@@ -423,7 +434,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery22InternationalDialogResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery22InternationalDialogResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			long personIdA = (long) tuple[0];
 //			long personIdB = (long) tuple[1];
 //			String cityName = (String) tuple[2];
@@ -440,7 +451,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery23HolidayDestinationsResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery23HolidayDestinationsResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			int count = (int) tuple[0];
 //			String countryName = (String) tuple[1];
 //			int month = (int) tuple[2];
@@ -457,7 +468,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery24MessagesByTopicResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery24MessagesByTopicResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			int messageCount = (int) tuple[0];
 //			int likeCount = (int) tuple[1];
 //			int year = (int) tuple[2];
@@ -475,7 +486,7 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //
 //		@Override
-//		public LdbcSnbBiQuery25WeightedPathsResult convertSingleResult(Object[] tuple) {
+//		public LdbcSnbBiQuery25WeightedPathsResult convertSingleResult(Object[] tuple, Map<String, Integer> columnNamesMap) {
 //			List<Long> personIds = record.get(0).asList(Values.ofLong());
 //			return new LdbcSnbBiQuery25WeightedPathsResult(personIds);
 //		}

@@ -17,8 +17,8 @@ RETURN
   forum.title,
   forum.creationDate,
   person.id,
-  count(post) AS postCount
-//  count(DISTINCT post) AS postCount
+  count(post)
+//  count(DISTINCT post)
 
 
 //ORDER BY

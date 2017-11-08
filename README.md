@@ -2,6 +2,29 @@
 
 [![Build Status](https://travis-ci.org/FTSRG/trainbenchmark.svg?branch=master)](https://travis-ci.org/FTSRG/trainbenchmark)
 
+## Graphflow
+
+
+### CSVs
+
+CSVs are always exported with quotes due to an [APOC issue](https://github.com/neo4j-contrib/neo4j-apoc-procedures/issues/652). Until this is resolved, just get rid of them manually. Go to the `models` directory and issue this command. Don't worry, it's idempotent.
+
+```bash
+sed -i 's/"//g' railway-*.csv
+```
+
+## Neo4j
+
+The easiest approach is to import GraphML files.
+
+## GraphMLs
+
+Load the graph to Neo4j with [APOC](https://neo4j-contrib.github.io/neo4j-apoc-procedures/):
+
+```
+CALL apoc.import.graphml('/path/to/trainbenchmark/models/railway-inject-1-neo4j.graphml', {batchSize: 10000, readLabels: true})
+```
+
 :steam_locomotive: **Summary.** The Train Benchmark is a framework for measuring the performance of continuous model transformations, with a particular emphasis on the performance of incremental query reevaluation. The benchmark is actively developed since 2011.
 
 :book: **Documentation.** If you are interested in implementing the benchmark on your tool, please visit the [documentation](docs/).

@@ -20,13 +20,13 @@ import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SEGMENT;
 
 public class GraphflowPosLengthInjectMatch extends GraphflowMatch implements PosLengthInjectMatch {
 
-	public GraphflowPosLengthInjectMatch(final Map<String, Object> match) {
-		super(match);
+	public GraphflowPosLengthInjectMatch(final Object[] tuple, final Map<String, Integer> columnNamesMapping) {
+		super(tuple, columnNamesMapping);
 	}
 
 	@Override
 	public Vertex getSegment() {
-		return (Vertex) match.get(VAR_SEGMENT);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT)];
 	}
 
 }

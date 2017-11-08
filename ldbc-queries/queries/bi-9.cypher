@@ -16,9 +16,9 @@ MATCH
   (forum)-[:hasMember]->(person:Person)
 WITH
   forum,
-  count(post1) AS count1,
-  count(post2) AS count2,
-  count(person) AS members
+  count(post1),
+  count(post2),
+  count(person)
 WHERE members > 0
 RETURN
   forum.id,

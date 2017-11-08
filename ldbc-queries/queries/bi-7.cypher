@@ -13,7 +13,7 @@ MATCH
   (person3:Person)-[l:likes]->(message3)
 RETURN
   person1.id,
-  count(l) AS authorityScore
+  count(l)
 //ORDER BY
 //  authorityScore DESC,
 //  person1.id ASC

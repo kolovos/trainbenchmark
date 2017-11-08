@@ -24,36 +24,36 @@ import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SWP;
 
 public class GraphflowSwitchSetMatch extends GraphflowMatch implements SwitchSetMatch {
 
-	public GraphflowSwitchSetMatch(final Map<String, Object> match) {
-		super(match);
+	public GraphflowSwitchSetMatch(final Object[] tuple, final Map<String, Integer> columnNamesMapping) {
+		super(tuple, columnNamesMapping);
 	}
 
 	@Override
 	public Vertex getSemaphore() {
-		return (Vertex) match.get(VAR_SEMAPHORE);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SEMAPHORE)];
 	}
 
 	@Override
 	public Vertex getRoute() {
-		return (Vertex) match.get(VAR_ROUTE);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_ROUTE)];
 	}
 
 	@Override
 	public Vertex getSwP() {
-		return (Vertex) match.get(VAR_SWP);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SWP)];
 	}
 
 	@Override
 	public Vertex getSw() {
-		return (Vertex) match.get(VAR_SW);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SW)];
 	}
 
 	public String getCurrentPosition() {
-		return (String) match.get(QueryConstants.VAR_CURRENTPOSITION);
+		return (String) tuple[columnNamesMapping.get(QueryConstants.VAR_CURRENTPOSITION)];
 	}
 
 	public String getPosition() {
-		return (String) match.get(QueryConstants.VAR_POSITION);
+		return (String) tuple[columnNamesMapping.get(QueryConstants.VAR_POSITION)];
 	}
 
 }

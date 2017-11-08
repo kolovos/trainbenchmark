@@ -22,23 +22,23 @@ import static hu.bme.mit.trainbenchmark.constants.QueryConstants.VAR_SENSOR;
 
 public class GraphflowConnectedSegmentsInjectMatch extends GraphflowMatch implements ConnectedSegmentsInjectMatch {
 
-	public GraphflowConnectedSegmentsInjectMatch(final Map<String, Object> match) {
-		super(match);
+	public GraphflowConnectedSegmentsInjectMatch(final Object[] tuple, final Map<String, Integer> columnNamesMapping) {
+		super(tuple, columnNamesMapping);
 	}
 
 	@Override
 	public Vertex getSensor() {
-		return (Vertex) match.get(VAR_SENSOR);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SENSOR)];
 	}
 
 	@Override
 	public Vertex getSegment1() {
-		return (Vertex) match.get(VAR_SEGMENT1);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT1)];
 	}
 
 	@Override
 	public Vertex getSegment3() {
-		return (Vertex) match.get(VAR_SEGMENT3);
+		return (Vertex) tuple[columnNamesMapping.get(VAR_SEGMENT3)];
 	}
 
 }

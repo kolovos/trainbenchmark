@@ -13,6 +13,7 @@ package hu.bme.mit.trainbenchmark.benchmark.graphflow.driver;
 
 import ca.waterloo.dsg.graphflow.query.QueryProcessor;
 import ca.waterloo.dsg.graphflow.query.result.QueryResult;
+import ca.waterloo.dsg.graphflow.query.result.Tuples;
 import ca.waterloo.dsg.graphflow.server.ServerQueryString;
 import com.google.common.collect.ImmutableList;
 import hu.bme.mit.trainbenchmark.benchmark.driver.Driver;
@@ -28,6 +29,7 @@ import java.util.Map;
 public class GraphflowDriver extends Driver {
 
 	protected final String modelDir;
+	protected final QueryProcessor processor = new QueryProcessor();
 
 	public GraphflowDriver(final String modelDir) throws IOException {
 		super();
@@ -52,22 +54,21 @@ public class GraphflowDriver extends Driver {
 			"connectsTo", "entry", "exit", "follows", "monitoredBy", "requires", "target"
 		);
 
-		final String fileFormat = modelDir + "/railway-inject-%d-%s.csv";
+		final String fileFormat = modelDir + "railway-inject-%d-%s.csv";
 		final String loadVerticesFormat = "load vertices with label '%s' from csv '%s' separator ',';";
 		final String loadEdgesFormat    = "load edges    with type  '%s' from csv '%s' separator ',';";
 
 		final int size = 1;
 
-		// TODO
 		for (final String vertexLabel : vertexLabels) {
 			final String filename = String.format(fileFormat, size, vertexLabel);
 			final String loadCommand = String.format(loadVerticesFormat, vertexLabel, filename);
-			System.out.println(loadCommand);
+			runCypher(loadCommand);
 		}
 		for (final String edgeType: edgeTypes) {
 			final String filename = String.format(fileFormat, size, edgeType);
 			final String loadCommand = String.format(loadEdgesFormat, edgeType, filename);
-			System.out.println(loadCommand);
+			runCypher(loadCommand);
 		}
 	}
 
@@ -84,19 +85,29 @@ public class GraphflowDriver extends Driver {
 	public Collection<GraphflowMatch> runQuery(final RailwayQuery query, final String queryDefinition) throws IOException {
 		final Collection<GraphflowMatch> results = new ArrayList<>();
 
-		final ServerQueryString serverQueryString = ServerQueryString.newBuilder().setQuery(queryDefinition).build();
-		final QueryProcessor processor = new QueryProcessor();
-		final QueryResult queryResult = processor.process(serverQueryString);
+		// the Train Benchmark queries always return with a Tuples object
+		final Tuples tuples = (Tuples) runCypher(queryDefinition);
 
-		System.out.println(queryDefinition);
-		System.out.println(queryResult.toString());
+		// TODO: convert these to
+//		tuples.getColumnNames();
+
+		System.out.println(tuples.getTuples().get(0));
+//		for (Object[] tuple: tuples.getTuples()) {
+//			System.out.println(tuple);
+//		}
 
 		return results;
 	}
 
 	public void runTransformation(final String transformationDefinition, final Map<String, Object> parameters)
 			throws IOException {
-		throw new UnsupportedOperationException("TODO: Implement transformations for Graphflow	");
+		throw new UnsupportedOperationException("TODO: Implement transformations for Graphflow");
+	}
+
+	public QueryResult runCypher(String cypher) {
+		final ServerQueryString serverQueryString = ServerQueryString.newBuilder().setQuery(cypher).build();
+		final QueryResult result = processor.process(serverQueryString);
+		return result;
 	}
 
 }
