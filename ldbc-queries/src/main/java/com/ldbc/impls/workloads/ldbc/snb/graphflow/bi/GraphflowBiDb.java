@@ -25,6 +25,7 @@ import java.util.Map;
 
 public class GraphflowBiDb extends GraphflowDb {
 
+
 	@Override
 	protected void onInit(Map<String, String> properties, LoggingService loggingService) throws DbException {
 		dbs = new GraphflowPoolingDbConnectionStore(properties, new GraphflowBiQueryStore(properties.get("queryDir")));
