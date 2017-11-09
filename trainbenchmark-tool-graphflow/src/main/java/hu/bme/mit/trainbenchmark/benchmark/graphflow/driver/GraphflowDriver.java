@@ -12,7 +12,6 @@
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.driver;
 
 import ca.waterloo.dsg.graphflow.query.QueryProcessor;
-import ca.waterloo.dsg.graphflow.query.result.Message;
 import ca.waterloo.dsg.graphflow.query.result.QueryResult;
 import ca.waterloo.dsg.graphflow.query.result.Tuples;
 import ca.waterloo.dsg.graphflow.server.ServerQueryString;
@@ -32,12 +31,12 @@ import java.util.stream.IntStream;
 
 public class GraphflowDriver extends Driver {
 
-	protected final String modelDir;
+	protected final String modelPath;
 	protected final QueryProcessor processor = new QueryProcessor();
 
-	public GraphflowDriver(final String modelDir) throws IOException {
+	public GraphflowDriver(final String modelPath) throws IOException {
 		super();
-		this.modelDir = modelDir;
+		this.modelPath = modelPath;
 	}
 
 	@Override
@@ -58,28 +57,30 @@ public class GraphflowDriver extends Driver {
 			"connectsTo", "entry", "exit", "follows", "monitoredBy", "requires", "target"
 		);
 
-		final String fileFormat = modelDir + "railway-inject-%d-%s.csv";
+		final String fileFormat = modelPath + "-%s.csv";
 		final String loadVerticesFormat = "load vertices with label '%s' from csv '%s' separator ',';";
 		final String loadEdgesFormat    = "load edges    with type  '%s' from csv '%s' separator ',';";
 
-		final int size = 1;
-
 		for (final String vertexLabel : vertexLabels) {
-			final String filename = String.format(fileFormat, size, vertexLabel);
+			final String filename = String.format(fileFormat, vertexLabel);
 			final String loadCommand = String.format(loadVerticesFormat, vertexLabel, filename);
 			runCypher(loadCommand);
 		}
 		for (final String edgeType: edgeTypes) {
-			final String filename = String.format(fileFormat, size, edgeType);
+			final String filename = String.format(fileFormat, edgeType);
 			final String loadCommand = String.format(loadEdgesFormat, edgeType, filename);
 			System.out.println(loadCommand);
 			runCypher(loadCommand);
 		}
 	}
 
+	/**
+	 *
+	 * @return empty string as CSV files have different postfixes based on their label/type
+	 */
 	@Override
 	public String getPostfix() {
-		return "cypher";
+		return "";
 	}
 
 	@Override
@@ -92,12 +93,6 @@ public class GraphflowDriver extends Driver {
 
 		// the Train Benchmark queries always return with a Tuples object
 		final QueryResult queryResult = runCypher(queryDefinition);
-		System.out.println(queryResult);
-
-
-		System.out.println(queryResult instanceof Message);
-		System.exit(0);
-
 		final Tuples tuples = (Tuples) queryResult;
 
 		final String[] columnNames = tuples.getColumnNames();
