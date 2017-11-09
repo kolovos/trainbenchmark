@@ -3,6 +3,7 @@ package com.ldbc.impls.workloads.ldbc.snb.graphflow.bi;
 import ca.waterloo.dsg.graphflow.query.QueryProcessor;
 import ca.waterloo.dsg.graphflow.query.result.QueryResult;
 import ca.waterloo.dsg.graphflow.server.ServerQueryString;
+import com.google.common.collect.ImmutableMap;
 import com.ldbc.driver.DbException;
 import com.ldbc.driver.control.LoggingService;
 import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery11UnrelatedReplies;
@@ -24,15 +25,94 @@ import com.ldbc.impls.workloads.ldbc.snb.graphflow.GraphflowPoolingDbConnectionS
 import com.ldbc.impls.workloads.ldbc.snb.graphflow.GraphflowSingletonOperationHandler;
 
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class GraphflowBiDb extends GraphflowDb {
+
+	private static final String PREFIX = "/home/szarnyasg/git/ldbc/snb/datagen/social_network/";
+	private static final String POSTFIX = "_0_0.csv";
+
+	final Map<String, Optional<String>> nodeCsvs = ImmutableMap.<String, Optional<String>>builder() //
+			.put("comment", Optional.of("Comment")) //
+			.put("forum", Optional.of("Forum")) //
+			.put("organisation", Optional.empty()) //
+			.put("person", Optional.of("Person")) //
+			.put("place", Optional.of("Place")) //
+			.put("post", Optional.of("Post")) //
+			.put("tagclass", Optional.of("TagClass")) //
+			.put("tag", Optional.of("Tag")) //
+			.build();
+
+	final Map<String, String> relationshipCsvs = ImmutableMap.<String, String>builder() //
+			.put("comment_hasCreator_person", "hasCreator") //
+			.put("comment_isLocatedIn_place", "isLocatedIn") //
+			.put("comment_replyOf_comment", "replyOf") //
+			.put("comment_replyOf_post", "replyOf") //
+			.put("forum_containerOf_post", "containerOf") //
+			.put("forum_hasMember_person", "hasMember") //
+			.put("forum_hasModerator_person", "hasModerator") //
+			.put("forum_hasTag_tag", "hasTag") //
+			.put("person_hasInterest_tag", "hasInterest") //
+			.put("person_isLocatedIn_place", "isLocatedIn") //
+			.put("person_knows_person", "knows") //
+			.put("person_likes_comment", "likes") //
+			.put("person_likes_post", "likes") //
+			.put("place_isPartOf_place", "isPartOf") //
+			.put("post_hasCreator_person", "hasCreator") //
+			.put("comment_hasTag_tag", "hasTag") //
+			.put("post_hasTag_tag", "hasTag") //
+			.put("post_isLocatedIn_place", "isLocatedIn") //
+			.put("tagclass_isSubclassOf_tagclass", "isSubclassOf") //
+			.put("tag_hasType_tagclass", "hasType") //
+			.put("organisation_isLocatedIn_place", "isLocatedIn") //
+			.put("person_studyAt_organisation", "studyAt") //
+			.put("person_workAt_organisation", "workAt") //
+			.build();
+
+	protected <T> Map<String, T> addPreAndPostFix(Map<String, T> names) {
+		return names.entrySet()
+				.stream()
+				.collect(Collectors.toMap(
+						e -> PREFIX + e.getKey() + POSTFIX,
+						e -> e.getValue())
+				);
+	}
+
+	final Map<String, Optional<String>> nodeFilenames = addPreAndPostFix(nodeCsvs);
+	final Map<String, String> relationshipFilenames = addPreAndPostFix(relationshipCsvs);
 
 	@Override
 	protected void onInit(Map<String, String> properties, LoggingService loggingService) throws DbException {
 		dbs = new GraphflowPoolingDbConnectionStore(properties, new GraphflowBiQueryStore(properties.get("queryDir")));
 
 		processor = dbs.getQueryProcessor();
-		runCypher(processor, "load stuff");
+
+		final String loadVerticesFormat = "load vertices %s from csv '%s' separator '|';";
+		final String loadEdgesFormat    = "load edges    with type  '%s' from csv '%s' separator '|';";
+
+		for (Map.Entry<String, Optional<String>> entry : nodeFilenames.entrySet()) {
+			final String fileName = entry.getKey();
+			final Optional<String> vertexLabel = entry.getValue();
+
+			final String filename = String.format(fileName, vertexLabel);
+			final String loadCommand = String.format(
+					loadVerticesFormat,
+					vertexLabel.isPresent() ? "with label '" + vertexLabel.get() + "'" : "",
+					filename);
+
+			System.out.println(loadCommand);
+			runCypher(processor, loadCommand);
+		}
+		for (Map.Entry<String, String> entry : relationshipFilenames.entrySet()) {
+			final String fileName = entry.getKey();
+			final String edgeType = entry.getValue();
+
+			final String filename = String.format(fileName, edgeType);
+			final String loadCommand = String.format(loadEdgesFormat, edgeType, filename);
+			System.out.println(loadCommand);
+			runCypher(processor, loadCommand);
+		}
 
 //		registerOperationHandler(LdbcSnbBiQuery1PostingSummary.class, BiQuery1.class);
 //		registerOperationHandler(LdbcSnbBiQuery2TopTags.class, BiQuery2.class);
@@ -498,9 +578,10 @@ public class GraphflowBiDb extends GraphflowDb {
 //		}
 //	}
 
-	public static QueryResult runCypher(QueryProcessor processor, String cypher) {
+	public static QueryResult runCypher(QueryProcessor qp, String cypher) {
 		final ServerQueryString serverQueryString = ServerQueryString.newBuilder().setQuery(cypher).build();
-		final QueryResult result = processor.process(serverQueryString);
+		final QueryResult result = qp.process(serverQueryString);
+		System.out.println(result);
 		return result;
 	}
 
