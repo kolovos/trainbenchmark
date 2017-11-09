@@ -13,6 +13,8 @@ public class LdbcSnbBiGraphflowTest extends LdbcSnbBiQueryTest {
 
 	public LdbcSnbBiGraphflowTest() throws DbException {
 		super(new GraphflowBiDb());
+
+//		GraphflowBiDb gdb = (GraphflowBiDb) db;
 	}
 
 	@Override

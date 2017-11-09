@@ -13,3 +13,4 @@ Jena (Inferencing),RDF,in-memory
 Jena (No Inferencing),RDF,in-memory
 MySQL,SQL,disk-resident
 SQLite,SQL,in-memory
+Graphflow,property graph,in-memory

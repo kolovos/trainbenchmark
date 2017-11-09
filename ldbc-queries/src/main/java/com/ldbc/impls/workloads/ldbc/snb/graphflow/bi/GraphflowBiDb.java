@@ -1,6 +1,8 @@
 package com.ldbc.impls.workloads.ldbc.snb.graphflow.bi;
 
 import ca.waterloo.dsg.graphflow.query.QueryProcessor;
+import ca.waterloo.dsg.graphflow.query.result.QueryResult;
+import ca.waterloo.dsg.graphflow.server.ServerQueryString;
 import com.ldbc.driver.DbException;
 import com.ldbc.driver.control.LoggingService;
 import com.ldbc.driver.workloads.ldbc.snb.bi.LdbcSnbBiQuery11UnrelatedReplies;
@@ -25,12 +27,12 @@ import java.util.Map;
 
 public class GraphflowBiDb extends GraphflowDb {
 
-
 	@Override
 	protected void onInit(Map<String, String> properties, LoggingService loggingService) throws DbException {
 		dbs = new GraphflowPoolingDbConnectionStore(properties, new GraphflowBiQueryStore(properties.get("queryDir")));
 
 		processor = dbs.getQueryProcessor();
+		runCypher(processor, "load stuff");
 
 //		registerOperationHandler(LdbcSnbBiQuery1PostingSummary.class, BiQuery1.class);
 //		registerOperationHandler(LdbcSnbBiQuery2TopTags.class, BiQuery2.class);
@@ -495,4 +497,11 @@ public class GraphflowBiDb extends GraphflowDb {
 //			return new LdbcSnbBiQuery25WeightedPathsResult(personIds);
 //		}
 //	}
+
+	public static QueryResult runCypher(QueryProcessor processor, String cypher) {
+		final ServerQueryString serverQueryString = ServerQueryString.newBuilder().setQuery(cypher).build();
+		final QueryResult result = processor.process(serverQueryString);
+		return result;
+	}
+
 }
