@@ -278,7 +278,6 @@ public abstract class TrainBenchmarkTest {
 
 	// inject
 
-	@Ignore
 	@Test
 	public void connectedSegmentsInjectTest() throws Exception {
 		// Arrange
@@ -322,6 +321,7 @@ public abstract class TrainBenchmarkTest {
 //		collector.checkThat(allMatches.get(RailwayQuery.POSLENGTH).get(1), Matchers.equalTo(41));
 	}
 
+	@Ignore
 	@Test
 	public void routeSensorInjectTest() throws Exception {
 		// Arrange

@@ -29,7 +29,9 @@ public class GraphflowTest extends TrainBenchmarkTest {
 
 	@Parameterized.Parameters(name = "queryExecutionStrategy={0}")
 	public static Iterable<? extends Object> data() {
-		return Arrays.asList(GraphflowQueryExecutionStrategy.CONTINUOUS, GraphflowQueryExecutionStrategy.ONE_TIME);
+		return Arrays.asList(
+//			GraphflowQueryExecutionStrategy.CONTINUOUS,
+			GraphflowQueryExecutionStrategy.ONE_TIME);
 	}
 
 	@Parameterized.Parameter(value = 0)

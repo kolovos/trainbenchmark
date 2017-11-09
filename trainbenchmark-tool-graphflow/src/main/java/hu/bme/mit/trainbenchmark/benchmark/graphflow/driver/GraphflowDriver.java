@@ -12,6 +12,7 @@
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.driver;
 
 import ca.waterloo.dsg.graphflow.query.QueryProcessor;
+import ca.waterloo.dsg.graphflow.query.result.Message;
 import ca.waterloo.dsg.graphflow.query.result.QueryResult;
 import ca.waterloo.dsg.graphflow.query.result.Tuples;
 import ca.waterloo.dsg.graphflow.server.ServerQueryString;
@@ -71,6 +72,7 @@ public class GraphflowDriver extends Driver {
 		for (final String edgeType: edgeTypes) {
 			final String filename = String.format(fileFormat, size, edgeType);
 			final String loadCommand = String.format(loadEdgesFormat, edgeType, filename);
+			System.out.println(loadCommand);
 			runCypher(loadCommand);
 		}
 	}
@@ -89,7 +91,14 @@ public class GraphflowDriver extends Driver {
 		final Collection<GraphflowMatch> results = new ArrayList<>();
 
 		// the Train Benchmark queries always return with a Tuples object
-		final Tuples tuples = (Tuples) runCypher(queryDefinition);
+		final QueryResult queryResult = runCypher(queryDefinition);
+		System.out.println(queryResult);
+
+
+		System.out.println(queryResult instanceof Message);
+		System.exit(0);
+
+		final Tuples tuples = (Tuples) queryResult;
 
 		final String[] columnNames = tuples.getColumnNames();
 		final List<String> columnNamesList = Arrays.asList(columnNames);
