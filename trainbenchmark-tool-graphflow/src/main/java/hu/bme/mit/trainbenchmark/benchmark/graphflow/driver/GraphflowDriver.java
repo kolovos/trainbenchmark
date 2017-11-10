@@ -11,6 +11,7 @@
  *******************************************************************************/
 package hu.bme.mit.trainbenchmark.benchmark.graphflow.driver;
 
+import ca.waterloo.dsg.graphflow.graph.GraphDBState;
 import ca.waterloo.dsg.graphflow.query.QueryProcessor;
 import ca.waterloo.dsg.graphflow.query.result.QueryResult;
 import ca.waterloo.dsg.graphflow.query.result.Tuples;
@@ -42,6 +43,7 @@ public class GraphflowDriver extends Driver {
 	@Override
 	public void initialize() throws Exception {
 		super.initialize();
+		GraphDBState.reset();
 	}
 
 	@Override
