@@ -2,8 +2,6 @@ import hu.bme.mit.trainbenchmark.config.ExecutionConfig
 import hu.bme.mit.trainbenchmark.generator.config.GeneratorConfigBase
 import hu.bme.mit.trainbenchmark.generator.config.Scenario
 import hu.bme.mit.trainbenchmark.generator.graph.neo4j.config.Neo4jGraphGeneratorConfigBuilder
-import hu.bme.mit.trainbenchmark.generator.graph.tinkerpop.config.TinkerGraphFormat
-import hu.bme.mit.trainbenchmark.generator.graph.tinkerpop.config.TinkerGraphGeneratorConfigBuilder
 import hu.bme.mit.trainbenchmark.generator.runner.GeneratorRunner
 import hu.bme.mit.trainbenchmark.neo4j.config.Neo4jGraphFormat
 
@@ -12,16 +10,16 @@ def minSize = 1
 def maxSize = 2048
 
 def scenarios = [
-	Scenario.BATCH,
+//	Scenario.BATCH,
 	Scenario.INJECT,
-	Scenario.REPAIR,
+//	Scenario.REPAIR,
 ]
 
 def formats = [
 //	new EmfGeneratorConfigBuilder(),
 	new Neo4jGraphGeneratorConfigBuilder().setGraphFormat(Neo4jGraphFormat.CSV),
-	new Neo4jGraphGeneratorConfigBuilder().setGraphFormat(Neo4jGraphFormat.GRAPHML),
-	new TinkerGraphGeneratorConfigBuilder().setGraphFormat(TinkerGraphFormat.GRAPHML),
+//	new Neo4jGraphGeneratorConfigBuilder().setGraphFormat(Neo4jGraphFormat.GRAPHML),
+//	new TinkerGraphGeneratorConfigBsuilder().setGraphFormat(TinkerGraphFormat.GRAPHML),
 //	new RdfGeneratorConfigBuilder().setFormat(RdfFormat.TURTLE).setInferred(true),
 //	new RdfGeneratorConfigBuilder().setFormat(RdfFormat.TURTLE).setInferred(false),
 //	new SqlGeneratorConfigBuilder(),

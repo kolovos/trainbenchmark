@@ -2,15 +2,13 @@ import hu.bme.mit.trainbenchmark.benchmark.config.BenchmarkConfigBaseBuilder
 import hu.bme.mit.trainbenchmark.benchmark.config.BenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.benchmark.config.ModelSetConfig
 import hu.bme.mit.trainbenchmark.benchmark.config.TransformationChangeSetStrategy
-import hu.bme.mit.trainbenchmark.benchmark.neo4j.config.Neo4jBenchmarkConfigBuilder
-import hu.bme.mit.trainbenchmark.benchmark.neo4j.config.Neo4jEngine
+import hu.bme.mit.trainbenchmark.benchmark.graphflow.config.GraphflowBenchmarkConfigBuilder
+import hu.bme.mit.trainbenchmark.benchmark.graphflow.config.GraphflowQueryExecutionStrategy
 import hu.bme.mit.trainbenchmark.benchmark.result.ResultHelper
 import hu.bme.mit.trainbenchmark.benchmark.runcomponents.BenchmarkReporter
 import hu.bme.mit.trainbenchmark.benchmark.runcomponents.BenchmarkRunner
-import hu.bme.mit.trainbenchmark.benchmark.tinkergraph.config.TinkerGraphBenchmarkConfigBuilder
 import hu.bme.mit.trainbenchmark.config.ExecutionConfig
 import hu.bme.mit.trainbenchmark.constants.RailwayOperation
-import hu.bme.mit.trainbenchmark.neo4j.config.Neo4jGraphFormat
 
 println('Please remember to stop all other Java processes.')
 println()
@@ -22,10 +20,10 @@ println('$ killall -9 java')
 
 def benchmarkId = ResultHelper.createNewResultDir()
 ResultHelper.saveConfiguration(benchmarkId)
-def ec = new ExecutionConfig(2000, 4000)
+def ec = new ExecutionConfig(2000, 8000)
 
 def minSize = 1
-def maxSize = 2048
+def maxSize = 4096
 def timeout = 900
 def runs = 5
 
@@ -44,17 +42,17 @@ println()
 //reportUrl = "https://hooks.slack.com/services/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"
 
 def tools = [
-//        new EmfApiBenchmarkConfigBuilder(),
-//        new JenaBenchmarkConfigBuilder().setInferencing(false),
-//        new JenaBenchmarkConfigBuilder().setInferencing(true),
-//        new MySqlBenchmarkConfigBuilder(),
-		new GraphflowBenchmarkConfigBuilder().setQueryExecutionStrategy(GraphflowQueryExecutionStrategy.ONE_TIME),
-		new Neo4jBenchmarkConfigBuilder().setEngine(Neo4jEngine.CORE_API).setGraphFormat(Neo4jGraphFormat.CSV),
-        new Neo4jBenchmarkConfigBuilder().setEngine(Neo4jEngine.CYPHER  ).setGraphFormat(Neo4jGraphFormat.GRAPHML),
-//        new SQLiteBenchmarkConfigBuilder(),
-        new TinkerGraphBenchmarkConfigBuilder(),
-//        new ViatraBenchmarkConfigBuilder().setBackend(ViatraBackend.INCREMENTAL),
-//        new ViatraBenchmarkConfigBuilder().setBackend(ViatraBackend.LOCAL_SEARCH),
+//new EmfApiBenchmarkConfigBuilder(),
+//new JenaBenchmarkConfigBuilder().setInferencing(false),
+//new JenaBenchmarkConfigBuilder().setInferencing(true),
+//new MySqlBenchmarkConfigBuilder(),
+new GraphflowBenchmarkConfigBuilder().setQueryExecutionStrategy(GraphflowQueryExecutionStrategy.ONE_TIME),
+//new Neo4jBenchmarkConfigBuilder().setEngine(Neo4jEngine.CORE_API).setGraphFormat(Neo4jGraphFormat.CSV),
+//new Neo4jBenchmarkConfigBuilder().setEngine(Neo4jEngine.CYPHER  ).setGraphFormat(Neo4jGraphFormat.GRAPHML),
+//new SQLiteBenchmarkConfigBuilder(),
+//new TinkerGraphBenchmarkConfigBuilder(),
+//new ViatraBenchmarkConfigBuilder().setBackend(ViatraBackend.INCREMENTAL),
+//new ViatraBenchmarkConfigBuilder().setBackend(ViatraBackend.LOCAL_SEARCH),
 ]
 
 def workloads = [
@@ -69,36 +67,36 @@ def workloads = [
 		modelVariant: "inject",
 		operations: [
 			RailwayOperation.CONNECTEDSEGMENTS,
-			RailwayOperation.POSLENGTH,
+//			RailwayOperation.POSLENGTH,
 			RailwayOperation.ROUTESENSOR,
-			RailwayOperation.SEMAPHORENEIGHBOR,
-			RailwayOperation.SWITCHSET,
-			RailwayOperation.SWITCHMONITORED,
-			RailwayOperation.CONNECTEDSEGMENTS_INJECT,
-			RailwayOperation.POSLENGTH_INJECT,
-			RailwayOperation.ROUTESENSOR_INJECT,
-			RailwayOperation.SEMAPHORENEIGHBOR_INJECT,
-			RailwayOperation.SWITCHSET_INJECT,
-			RailwayOperation.SWITCHMONITORED_INJECT,
+//			RailwayOperation.SEMAPHORENEIGHBOR,
+//			RailwayOperation.SWITCHSET,
+//			RailwayOperation.SWITCHMONITORED,
+//			RailwayOperation.CONNECTEDSEGMENTS_INJECT,
+//			RailwayOperation.POSLENGTH_INJECT,
+//			RailwayOperation.ROUTESENSOR_INJECT,
+//			RailwayOperation.SEMAPHORENEIGHBOR_INJECT,
+//			RailwayOperation.SWITCHSET_INJECT,
+//			RailwayOperation.SWITCHMONITORED_INJECT,
 		],
 		strategy: TransformationChangeSetStrategy.FIXED,
 		constant: 10, // elements
-		queryTransformationCount: 12, // iterations
+		queryTransformationCount: 0, // iterations
 	],
-	Repair: [
-		modelVariant: "repair",
-		operations: [
-			RailwayOperation.CONNECTEDSEGMENTS_REPAIR,
-			RailwayOperation.POSLENGTH_REPAIR,
-			RailwayOperation.ROUTESENSOR_REPAIR,
-			RailwayOperation.SEMAPHORENEIGHBOR_REPAIR,
-			RailwayOperation.SWITCHSET_REPAIR,
-			RailwayOperation.SWITCHMONITORED_REPAIR,
-		],
-		strategy: TransformationChangeSetStrategy.PROPORTIONAL,
-		constant: 5, // percent
-		queryTransformationCount: 8, // iterations
-	],
+//	Repair: [
+//		modelVariant: "repair",
+//		operations: [
+//			RailwayOperation.CONNECTEDSEGMENTS_REPAIR,
+//			RailwayOperation.POSLENGTH_REPAIR,
+//			RailwayOperation.ROUTESENSOR_REPAIR,
+//			RailwayOperation.SEMAPHORENEIGHBOR_REPAIR,
+//			RailwayOperation.SWITCHSET_REPAIR,
+//			RailwayOperation.SWITCHMONITORED_REPAIR,
+//		],
+//		strategy: TransformationChangeSetStrategy.PROPORTIONAL,
+//		constant: 5, // percent
+//		queryTransformationCount: 8, // iterations
+//	],
 ]
 
 def runBenchmarkSeries(BenchmarkConfigBaseBuilder configBaseBuilder, BenchmarkConfigBuilder configBuilder,
