@@ -1,5 +1,7 @@
 ## Import the CSV files to Neo4j/ingraph
 
+This version has a `headers.txt` file which does not specify id spaces.
+
 Use the standard CSVSerializers of the LDBC SNB [DATAGEN](https://github.com/ldbc/ldbc_snb_datagen/) project:
 
 ```
