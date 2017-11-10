@@ -321,6 +321,7 @@ public abstract class TrainBenchmarkTest {
 //		collector.checkThat(allMatches.get(RailwayQuery.POSLENGTH).get(1), Matchers.equalTo(41));
 	}
 
+	@Ignore
 	@Test
 	public void routeSensorInjectTest() throws Exception {
 		// Arrange

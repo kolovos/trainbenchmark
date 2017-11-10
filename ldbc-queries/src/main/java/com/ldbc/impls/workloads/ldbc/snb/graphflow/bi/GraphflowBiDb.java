@@ -38,7 +38,7 @@ public class GraphflowBiDb extends GraphflowDb {
 			.put("forum", Optional.of("Forum")) //
 			.put("organisation", Optional.empty()) //
 			.put("person", Optional.of("Person")) //
-			.put("place", Optional.of("Place")) //
+			.put("place", Optional.empty()) //
 			.put("post", Optional.of("Post")) //
 			.put("tagclass", Optional.of("TagClass")) //
 			.put("tag", Optional.of("Tag")) //
