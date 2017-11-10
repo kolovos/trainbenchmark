@@ -1,4 +1,4 @@
-MATCH
+CONTINUOUSLY MATCH
   (segment1:Segment)-[:monitoredBy]->(sensor:Sensor),
   (segment1:Segment)-[:connectsTo]->(segment2),
   (segment2:Segment)-[:connectsTo]->(segment3),
@@ -10,4 +10,4 @@ MATCH
   (segment4)-[:monitoredBy]->(sensor),
   (segment5)-[:monitoredBy]->(sensor),
   (segment6)-[:monitoredBy]->(sensor)
-RETURN sensor, segment1, segment2, segment3, segment4, segment5, segment6
+FILE 'results.out';
