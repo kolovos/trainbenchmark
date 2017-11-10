@@ -8,8 +8,7 @@ script:
   - ./gradlew publishToMavenLocal
   - cd ..
   - scripts/get-neo4j.sh
-  # excluding tests for the SQL generator as they require full control over a MySQL instance
-  - ./gradlew inits build -x :trainbenchmark-generator-sql:test -x :trainbenchmark-tool-mysql:test --stacktrace --continue
+  - ./gradlew inits build --stacktrace --continue
 notifications:
   slack: ldbcouncil:5g01hnE5LoES6n3K5jlsSesh
   email: false
