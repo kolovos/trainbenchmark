@@ -284,8 +284,8 @@ public abstract class TrainBenchmarkTest {
 		final String modelFilename = "railway-inject-" + largeSize;
 		final String workload = "ConnectedSegmentsInjectTest";
 		final List<RailwayOperation> operations = ImmutableList.of(//
-				RailwayOperation.CONNECTEDSEGMENTS, //
-				RailwayOperation.CONNECTEDSEGMENTS_INJECT //
+				RailwayOperation.CONNECTEDSEGMENTS //
+//				RailwayOperation.CONNECTEDSEGMENTS_INJECT //
 		);
 		final BenchmarkConfigBase bcb = bcbbTransformation.setModelFilename(modelFilename).setOperations(operations)
 				.setWorkload(workload).createConfigBase();
