@@ -1,18 +1,19 @@
 package hu.bme.mit.trainbenchmark.generator.tests;
 
-import java.util.Arrays;
-
+import hu.bme.mit.trainbenchmark.config.ExecutionConfig;
+import hu.bme.mit.trainbenchmark.generator.config.GeneratorConfigBase;
+import hu.bme.mit.trainbenchmark.generator.config.GeneratorConfigBaseBuilder;
+import hu.bme.mit.trainbenchmark.generator.config.Scenario;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import hu.bme.mit.trainbenchmark.config.ExecutionConfig;
-import hu.bme.mit.trainbenchmark.generator.config.GeneratorConfigBase;
-import hu.bme.mit.trainbenchmark.generator.config.GeneratorConfigBaseBuilder;
-import hu.bme.mit.trainbenchmark.generator.config.Scenario;
+import java.util.Arrays;
 
+@Ignore
 @RunWith(Parameterized.class)
 public abstract class GeneratorTest {
 
