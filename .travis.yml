@@ -10,9 +10,7 @@ script:
   - ./gradlew publishToMavenLocal
   - cd ..
   - scripts/get-neo4j.sh
-  - git status
   - ./gradlew inits build -x :trainbenchmark-generator-graph-neo4j:test  --stacktrace --continue
-  - git status
 notifications:
   slack: ldbcouncil:5g01hnE5LoES6n3K5jlsSesh
   email: false
