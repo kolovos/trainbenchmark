@@ -3,8 +3,10 @@ jdk:
   - oraclejdk8
 install: true
 script:
-  - git clone https://github.com/graphflow/graphflow
+#  - git clone https://github.com/graphflow/graphflow
+  - git clone https://github.com/nare469/graphflow.git
   - cd graphflow
+  - git checkout csv-load
   - ./gradlew publishToMavenLocal
   - cd ..
   - scripts/get-neo4j.sh
