@@ -13,7 +13,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
 
-@Ignore
 @RunWith(Parameterized.class)
 public abstract class GeneratorTest {
 
