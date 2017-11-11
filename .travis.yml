@@ -10,7 +10,9 @@ script:
   - ./gradlew publishToMavenLocal
   - cd ..
   - scripts/get-neo4j.sh
+  - git status
   - ./gradlew inits build --stacktrace --continue
+  - git status
 notifications:
   slack: ldbcouncil:5g01hnE5LoES6n3K5jlsSesh
   email: false
