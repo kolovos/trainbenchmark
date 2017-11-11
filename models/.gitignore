@@ -1,6 +1,6 @@
 *
-!-1-*.csv
-!-2-*.csv
-!-1-*.graphml
-!-1-*.graphml
+!*-1-*.csv
+!*-2-*.csv
+!*-1-*.graphml
+!*-2-*.graphml
 !.gitignore
